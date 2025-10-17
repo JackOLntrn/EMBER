@@ -1,54 +1,51 @@
-/** @file main.cpp
- *  This is a simple test program for the MLX90640 thermal camera.
- *  It uses the MLX90640_Interface class defined in mlx90640.h, which is based
- *  on the MLX90640 API and I2C driver that were supplied by SparkFun and
- *  originally developed by Melexis.
- *  @author Spluttflob
- *  @date  2025-Oct-05
- */
-
 #include <Arduino.h>
-#include <mlx90640.h>
 
+// NOTE: This project targets an ESP32 (see platformio.ini). Some GPIOs
+// (notably 6..11) are connected to the flash/SPI bus and must NOT be used.
+// Using those pins can prevent the board from booting, which would also
+// explain why you saw no Serial output.
 
-// Create an interface to the MLX90640
-MLX90640_Interface mlx90640;
+// Choose safe GPIO pins for direction inputs. Change these to match your
+// wiring. If your H-bridge also has an ENABLE or PWM pin, make sure it is
+// driven HIGH or given PWM as appropriate.
+const int in1 = 16; // safe default GPIO
+const int in2 = 17; // safe default GPIO
 
-
-/** Setup function. Starts I2C and serial communication; initializes MLX90640.
- *  Halts if the MLX90640 is not found or if parameter extraction fails.
- */
 void setup() 
 {
-    // Array to hold the raw EEPROM data
-    uint16_t eeMLX90640[832];
+  // Start serial and give the monitor a short time to attach
+  Serial.begin(115200);
+  delay(200);
+  Serial.println("Booting...");
 
-    Serial.begin(115200);
-    while(!Serial);
-    delay(1000);
-    Serial << "Testing a MLX90640 thermal camera" << endl;
+  pinMode(in1, OUTPUT);
+  pinMode(in2, OUTPUT);
 
-    // Initialize I2C and set frequency
-    Wire.begin();
-    Wire.setClock(100000);
-    delay(100);
-
-    // Initialize the MLX90640 camera; hang here if it fails
-    mlx90640.begin();
-    Serial << "MLX90640 initialized." << endl;
+  // Ensure motor is stopped initially
+  digitalWrite(in1, LOW);
+  digitalWrite(in2, LOW);
+  Serial.print("Using IN1="); Serial.println(in1);
+  Serial.print("Using IN2="); Serial.println(in2);
+  Serial.println("Initial stop state set");
 }
 
-
-/** @brief Main loop.
- *  Reads two frames from the MLX90640, merges them, and displays as ASCII art.
- */
 void loop() 
 {
-    static float frame[NUM_PIXELS];
+  // Forward
+  Serial.println("Forward");
+  digitalWrite(in1, HIGH);
+  digitalWrite(in2, LOW);
+  delay(1000);
 
-    mlx90640.readFrame(frame);
-    mlx90640.displayFrameAsASCII(frame);
-    Serial.println();
-    delay(5000);
+  // Backward
+  Serial.println("Backward");
+  digitalWrite(in1, LOW);
+  digitalWrite(in2, HIGH);
+  delay(1000);
 
+  // Stop
+  Serial.println("Stop");
+  digitalWrite(in1, LOW);
+  digitalWrite(in2, LOW);
+  delay(1000);
 }
