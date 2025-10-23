@@ -2823,12 +2823,6 @@
 		(uuid "ec5a7c86-0ad9-453e-a9f3-ab244487df72")
 	)
 	(junction
-		(at 186.69 162.56)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "0040b0de-f5db-4885-9624-86689cc59d3c")
-	)
-	(junction
 		(at 189.23 57.15)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -2895,10 +2889,10 @@
 		(uuid "c83e4fae-0d35-413c-8591-6d59159e19f5")
 	)
 	(junction
-		(at 186.69 134.62)
+		(at 132.08 106.68)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "e7e51ef4-ef2d-4d80-ac2b-ca73dcc676ef")
+		(uuid "d41832cb-edb6-44c0-9ed8-c66094a7164b")
 	)
 	(wire
 		(pts
@@ -3042,16 +3036,6 @@
 	)
 	(wire
 		(pts
-			(xy 198.12 134.62) (xy 186.69 134.62)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "1f6022f3-a18c-40a3-9432-089216623835")
-	)
-	(wire
-		(pts
 			(xy 176.53 102.87) (xy 196.85 102.87)
 		)
 		(stroke
@@ -3109,6 +3093,16 @@
 			(type default)
 		)
 		(uuid "36cefb0d-88a6-418d-b9dd-fd8e7536b063")
+	)
+	(wire
+		(pts
+			(xy 132.08 106.68) (xy 132.08 113.03)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "39b5816a-e765-43d5-bb51-70a8058f6ce4")
 	)
 	(wire
 		(pts
@@ -3212,26 +3206,6 @@
 	)
 	(wire
 		(pts
-			(xy 198.12 162.56) (xy 186.69 162.56)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "62e3eb09-0816-4d16-8b50-615f180c31a0")
-	)
-	(wire
-		(pts
-			(xy 198.12 149.86) (xy 198.12 134.62)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "65187290-98a1-4d42-8545-19e45607cd8b")
-	)
-	(wire
-		(pts
 			(xy 181.61 143.51) (xy 204.47 143.51)
 		)
 		(stroke
@@ -3249,16 +3223,6 @@
 			(type default)
 		)
 		(uuid "67698c2b-1b30-4df6-978a-9b95a90c3aa6")
-	)
-	(wire
-		(pts
-			(xy 198.12 154.94) (xy 198.12 162.56)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "696539da-5f35-4246-adc4-7cb084a6a6b4")
 	)
 	(wire
 		(pts
@@ -3309,6 +3273,16 @@
 			(type default)
 		)
 		(uuid "7a84ac7a-decf-4cac-ae8f-aa1e4fc66d0d")
+	)
+	(wire
+		(pts
+			(xy 129.54 106.68) (xy 132.08 106.68)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "83c0564e-8533-40ec-b47a-cf67590646cf")
 	)
 	(wire
 		(pts
@@ -3612,6 +3586,16 @@
 	)
 	(wire
 		(pts
+			(xy 132.08 106.68) (xy 134.62 106.68)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f655f6d6-bfe9-4e71-921b-202872c79a6f")
+	)
+	(wire
+		(pts
 			(xy 199.39 105.41) (xy 199.39 69.85)
 		)
 		(stroke
@@ -3833,6 +3817,72 @@
 	)
 	(symbol
 		(lib_id "power:GND")
+		(at 132.08 113.03 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "1e56df38-03c8-43b2-8961-cf006abe5322")
+		(property "Reference" "#PWR08"
+			(at 132.08 119.38 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 132.08 118.11 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 132.08 113.03 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 132.08 113.03 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 132.08 113.03 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "f9a24c38-e66f-4a0b-92b7-44034d5f2dee")
+		)
+		(instances
+			(project "ME507-EMBER"
+				(path "/259d0011-820b-41ae-9d34-b870aa68bb26"
+					(reference "#PWR08")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
 		(at 80.01 49.53 0)
 		(unit 1)
 		(exclude_from_sim no)
@@ -3924,7 +3974,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Package_TO_SOT_SMD:TSOT-23"
+		(property "Footprint" "Package_TO_SOT_SMD:PQFN_8x8"
 			(at 176.53 78.74 0)
 			(effects
 				(font
@@ -4260,76 +4310,6 @@
 			(project ""
 				(path "/259d0011-820b-41ae-9d34-b870aa68bb26"
 					(reference "#PWR01")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:C_Small")
-		(at 198.12 152.4 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "8b5e4aad-3949-47b7-97b9-1de439793f37")
-		(property "Reference" "C2"
-			(at 200.66 151.1362 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "47 uF"
-			(at 200.66 153.6762 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" ""
-			(at 198.12 152.4 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 198.12 152.4 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Unpolarized capacitor, small symbol"
-			(at 198.12 152.4 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "8905943d-7206-4c1e-b585-fc99431bce2d")
-		)
-		(pin "2"
-			(uuid "e22d2dee-7f31-4e30-875a-d32b8ae92b39")
-		)
-		(instances
-			(project "ME507-EMBER"
-				(path "/259d0011-820b-41ae-9d34-b870aa68bb26"
-					(reference "C2")
 					(unit 1)
 				)
 			)
