@@ -2561,7 +2561,7 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Transistor_FET:Q_NMOS_SGD"
+		(symbol "Transistor_FET:Q_NMOS_GDS"
 			(pin_names
 				(offset 0)
 				(hide yes)
@@ -2578,7 +2578,7 @@
 					(justify left)
 				)
 			)
-			(property "Value" "Q_NMOS_SGD"
+			(property "Value" "Q_NMOS_GDS"
 				(at 5.08 0 0)
 				(effects
 					(font
@@ -2605,7 +2605,7 @@
 					(hide yes)
 				)
 			)
-			(property "Description" "N-MOSFET transistor, source/gate/drain"
+			(property "Description" "N-MOSFET transistor, gate/drain/source"
 				(at 0 0 0)
 				(effects
 					(font
@@ -2623,7 +2623,7 @@
 					(hide yes)
 				)
 			)
-			(symbol "Q_NMOS_SGD_0_1"
+			(symbol "Q_NMOS_GDS_0_1"
 				(polyline
 					(pts
 						(xy 0.254 1.905) (xy 0.254 -1.905)
@@ -2790,10 +2790,10 @@
 					)
 				)
 			)
-			(symbol "Q_NMOS_SGD_1_1"
+			(symbol "Q_NMOS_GDS_1_1"
 				(pin input line
 					(at -5.08 0 0)
-					(length 5.08)
+					(length 2.54)
 					(name "G"
 						(effects
 							(font
@@ -2801,7 +2801,7 @@
 							)
 						)
 					)
-					(number "2"
+					(number "1"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -2819,7 +2819,7 @@
 							)
 						)
 					)
-					(number "3"
+					(number "2"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -2837,7 +2837,7 @@
 							)
 						)
 					)
-					(number "1"
+					(number "3"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -5198,79 +5198,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Transistor_FET:Q_NMOS_SGD")
-		(at 171.45 81.28 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "2cdc23e1-ae08-4aea-8e6c-1c5621b666ce")
-		(property "Reference" "Q2"
-			(at 177.8 80.0099 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "Q_NMOS_SGD"
-			(at 177.8 82.5499 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "EMBER_Footprints:MOSFET_Vishay_PowerPAK_1212-8_Single_JACKSON"
-			(at 176.53 78.74 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 171.45 81.28 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "N-MOSFET transistor, source/gate/drain"
-			(at 171.45 81.28 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "3"
-			(uuid "e6732a11-e7ab-48ca-9166-ebf899ebad55")
-		)
-		(pin "1"
-			(uuid "49187781-b18f-44f2-884f-affbf620b072")
-		)
-		(pin "2"
-			(uuid "0b4f0dc6-14c2-4569-ac42-d54d01cf14f6")
-		)
-		(instances
-			(project ""
-				(path "/259d0011-820b-41ae-9d34-b870aa68bb26"
-					(reference "Q2")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Device:R_US")
 		(at 146.05 34.29 180)
 		(unit 1)
@@ -6223,6 +6150,79 @@
 			(project "ME507-EMBER"
 				(path "/259d0011-820b-41ae-9d34-b870aa68bb26"
 					(reference "R1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Transistor_FET:Q_NMOS_GDS")
+		(at 171.45 81.28 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "a6e1180d-4d32-4c43-9f42-23c6046c224b")
+		(property "Reference" "Q1"
+			(at 177.8 80.0099 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "Q_NMOS_GDS"
+			(at 177.8 82.5499 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Package_TO_SOT_SMD:TO-252-2"
+			(at 176.53 78.74 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 171.45 81.28 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "N-MOSFET transistor, gate/drain/source"
+			(at 171.45 81.28 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "6496bbfa-2b40-47cc-8cd4-e134194186d2")
+		)
+		(pin "3"
+			(uuid "0d978630-12d8-4900-bba0-63fac97052bb")
+		)
+		(pin "2"
+			(uuid "cf8d75fa-1087-4085-b568-7bff7bb60241")
+		)
+		(instances
+			(project ""
+				(path "/259d0011-820b-41ae-9d34-b870aa68bb26"
+					(reference "Q1")
 					(unit 1)
 				)
 			)
