@@ -5,6 +5,7 @@
  * @description: ...
  */
 #include <Arduino.h>
+#include "DRV8871Driver.h"
 
 
 
