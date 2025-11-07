@@ -24,18 +24,15 @@ class DRV8871Driver {
          * Constructor
          * @param in1 PWM output pin
          * @param in2 Direction pin
-         * @param channel LEDC channel (0-15 on ESP32)
-         * @param freq PWM frequency in Hz (default 10kHz)
-         * @param res PWM resolution in bits (default 8)
          */
-        DRV8871Driver(uint8_t in1, uint8_t in2, uint8_t channel = 0, uint32_t freq = 10000, uint8_t res = 8);
+        DRV8871Driver(uint8_t in1, uint8_t in2);
 
         /**
          * Drive the motor
          * @param speed unsigned speed value. Range: 0 to max based on resolution
          * @param dir   Direction (true/false) written to the direction pin
          */
-        void driveMotor(uint16_t speed, bool dir);
+        void driveMotor(uint8_t speed, bool dir);
 
         // Coast (disable PWM) — motor freewheels
         void coastMotor(void);
