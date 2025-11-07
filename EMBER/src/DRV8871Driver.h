@@ -32,8 +32,7 @@ class DRV8871Driver {
 
         /**
          * Drive the motor
-         * @param speed unsigned speed value. Only magnitude is used for PWM
-         *              and is clamped to the current resolution range.
+         * @param speed unsigned speed value. Range: 0 to max based on resolution
          * @param dir   Direction (true/false) written to the direction pin
          */
         void driveMotor(uint16_t speed, bool dir);
