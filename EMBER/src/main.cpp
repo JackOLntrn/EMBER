@@ -1,11 +1,12 @@
 /** 
- * @title E.M.B.E.R - main file
+ * E.M.B.E.R - main file
  * @author Jackson Cordova, Matthieu Gol, GPT-5 mini
  * @date November 2025
  * @description: ...
  */
 #include <Arduino.h>
 #include "DRV8871Driver.h"
+#include <PrintStream.h>
 
 
 void setup() {

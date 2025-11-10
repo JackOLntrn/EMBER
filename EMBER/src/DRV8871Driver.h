@@ -14,6 +14,16 @@
 #ifndef DRV8871_DRIVER_H
 #define DRV8871_DRIVER_H
 
+/**
+ * @class DRV8871Driver
+ * @brief A class to add basic functions for DRV8871 Motor Driver
+ *
+ * 
+ * @details This class enables drive, coast, and brake functions 
+ * for a DRV8871 motor driver. It uses PWM for speed control and 
+ * a digital pin for direction control. This class uses 8 bit
+ * PWM resolution, so speed values should be between 0 and 255.
+ */
 class DRV8871Driver {
     protected:
         uint8_t in1Pin;      // PWM pin (attached to LEDC channel)
@@ -34,13 +44,11 @@ class DRV8871Driver {
          */
         void driveMotor(uint8_t speed, bool dir);
 
-        // Coast (disable PWM) — motor freewheels
         /**
          * Coast the Motor (disable PWM) - slowly come to a stop from friction
          */
         void coastMotor(void);
 
-        // Brake (active braking if supported by hardware)
         /**
          * Brake the motor quickly - quickly stop the motor using active braking
          */

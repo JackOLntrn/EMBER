@@ -15,7 +15,7 @@ DRV8871Driver::DRV8871Driver(uint8_t in1, uint8_t in2)
     in1Pin = in1;
     in2Pin = in2;
 
-    // Ensure direction pin is an output
+    // Initialzie pins as outputs
     pinMode(in2Pin, OUTPUT);
     pinMode(in1Pin, OUTPUT);
 }
