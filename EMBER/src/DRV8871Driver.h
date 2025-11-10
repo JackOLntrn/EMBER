@@ -1,24 +1,24 @@
-/** @file DRV8871Driver.h
+/** @file DRV8871Driver.cpp
+ * This file implements a class to provide basic control for 
+ * a DRV8871 motor driver using PWM for speed control. 
+ * To use this code you will need PWM capable output pins.
+ * 
  * @brief Driver class for the DRV8871 motor driver
  * @author Jackson Cordova, GPT-5 mini
  * @date November 2025
- * 
- * Lightweight, ESP32-friendly driver that uses the LEDC (PWM) API
- * for speed control and a GPIO for direction. The class is written
- * to be compatible with the Arduino core on ESP32 (uses ledc* APIs).
  */
+
+ #include <Arduino.h>
+
 
 #ifndef DRV8871_DRIVER_H
 #define DRV8871_DRIVER_H
-#include <Arduino.h>
 
 class DRV8871Driver {
     protected:
         uint8_t in1Pin;      // PWM pin (attached to LEDC channel)
         uint8_t in2Pin;      // Direction pin (digital)
-        uint8_t ledcChannel; // LEDC channel used for this instance
-        uint8_t resolution;  // PWM resolution in bits (e.g., 8)
-
+        
     public:
         /**
          * Constructor
@@ -35,9 +35,15 @@ class DRV8871Driver {
         void driveMotor(uint8_t speed, bool dir);
 
         // Coast (disable PWM) — motor freewheels
+        /**
+         * Coast the Motor (disable PWM) - slowly come to a stop from friction
+         */
         void coastMotor(void);
 
         // Brake (active braking if supported by hardware)
+        /**
+         * Brake the motor quickly - quickly stop the motor using active braking
+         */
         void brakeMotor(void);
 };
 

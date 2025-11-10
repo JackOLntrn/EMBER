@@ -1,4 +1,12 @@
-
+/** @file DRV8871Driver.cpp
+ * This file implements a class to provide basic control for 
+ * a DRV8871 motor driver using PWM for speed control. 
+ * To use this code you will need PWM capable output pins.
+ * 
+ * @brief Driver class for the DRV8871 motor driver
+ * @author Jackson Cordova, GPT-5 mini
+ * @date November 2025
+ */
 
 #include "DRV8871Driver.h"
 
