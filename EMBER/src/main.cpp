@@ -5,53 +5,40 @@
  * @description: ...
  */
 #include <Arduino.h>
+#include "PrintStream.h"
+#include "shares.h"
+#include "taskshare.h"
 #include "DRV8871Driver.h"
-#include <PrintStream.h>
+#include <ESP32Encoder.h>
+#include "task_motorControl.h"
+#include "task_tempTask.h"
+
+
+Share<int32_t> panRefCount("PanRefCount");
+Share<int32_t> tiltRefCount("TiltRefCount");
+Share<bool> fire("Fire");
+
 
 
 void setup() {
-  Serial.begin(115200);
-  // make the motor driver instance static so it persists after setup()
-  static DRV8871Driver Motor1(16,17);
-  Motor1.brakeMotor();
-  delay(1000);
-  Serial.println("Driving motor forward at half speed");
-  Motor1.driveMotor(128, true);
-  delay(1000);
-  Serial.println("Braking motor");
-  Motor1.brakeMotor();
-  delay(2000);
-  Serial.println("Ramping motor speed up");
-  // use an int here to avoid 8-bit wrap-around which would make the loop infinite
-  for (int speed = 0; speed <= 255; speed += 5) {
-    Motor1.driveMotor(speed, true);
-    delay(100);
-  }
-  Motor1.coastMotor();
-  delay(1000);
-  Motor1.driveMotor(255, true);
-  delay(20);
-  for (int speed = 255; speed >= 0; speed -= 5) {
-    Motor1.driveMotor(speed, true);
-    delay(100);
-  }
-
-  for (int speed = 0; speed <= 255; speed += 5) {
-    Motor1.driveMotor(speed, true);
-    delay(100);
-  }
-
-  
-  
-  Motor1.coastMotor();
-
-  delay(2000);
-  Motor1.driveMotor(200, false);
-  delay(1000);
-  Motor1.brakeMotor();
+    Serial.begin(115200);
+    xTaskCreate(task_motorControl,
+                "Motor Control Task",
+                4096,
+                NULL,
+                1,
+                NULL);
+    xTaskCreate(task_tempTask,
+                "Temp Task",
+                4096,
+                NULL,
+                1,
+                NULL);
 }
 
 void loop() {
-  Serial.println(".");
-  delay(1000);
+  vTaskDelay(60000);
 }
+
+
+
