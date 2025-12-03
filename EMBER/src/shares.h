@@ -16,6 +16,8 @@
 extern Share<int32_t> panRefCount;
 extern Share<int32_t> tiltRefCount;
 extern Share<bool> fire;
+extern Share<bool> spray;
+extern float Frame[768]; // place frame in static memory to avoid large stack usage
 
 
 #endif

@@ -33,6 +33,7 @@ void task_read_camera(void* p_params) {
         // check if new data is available and read if so into the global Frame buffer
         if(mlx.checkNewDataAvailable()) {
             mlx.readFrame(Frame);
+            mlx.clearNewDataFlag();
         }
 
         // Check for hotspots and publish events
@@ -43,7 +44,6 @@ void task_read_camera(void* p_params) {
             }
         }
         
-        vTaskDelay(125);
     }
 
 }

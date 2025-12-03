@@ -9,7 +9,7 @@
  #define _task_webserver_h_
  #undef USE_LAN
 
+
  void task_webserver (void* p_params);
  void setup_wifi(void);
- extern float Frame[768]; // place frame in static memory to avoid large stack usage
  #endif

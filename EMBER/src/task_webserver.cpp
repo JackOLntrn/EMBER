@@ -11,6 +11,7 @@
 #include "PrintStream.h"
 #include <ArduinoJson.h>
 #include <task_read_camera.h>
+#include "shares.h"
 
 
 const int THERM_W = 32;

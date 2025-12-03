@@ -12,12 +12,16 @@
 
 
 void task_tempTask(void* p_params) {
-    fire.put(false);
+    fire.put(true);
     panRefCount.put(0);
     tiltRefCount.put(0);
 
     while(true) {
-
-        vTaskDelay(60000);
+        if (millis() > 5000) {
+            fire.put(true);
+            panRefCount.put(4192);
+            tiltRefCount.put(4192);
+        }
+        vTaskDelay(100);
     }
 }
