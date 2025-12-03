@@ -8,7 +8,9 @@
 #include "task_read_camera.h"
 #include <Arduino.h>
 #include "MLX90640.h"
+#include <Wire.h>
 #include "shares.h"
+#include "task_webserver.h"
 
 #define NUM_PIXELS 768
 
@@ -26,41 +28,22 @@ void task_read_camera(void* p_params) {
     delay(100);
     static MLX90640_Interface mlx; // place instance in static memory to avoid large stack usage
     mlx.begin();
-    static float Frame[NUM_PIXELS]; // place frame in static memory to avoid large stack usage
 
     while(true) {
-        // check if new data is available and read if so
+        // check if new data is available and read if so into the global Frame buffer
         if(mlx.checkNewDataAvailable()) {
             mlx.readFrame(Frame);
         }
-        // printing for debugging
 
-        // for(int i = 0; i < NUM_PIXELS; i++) {
-        //     Serial << (int)Frame[i] << " ";
-        //     if(i % 24 == 0) {
-        //         Serial << endl;
-        //     }
-        // }
-        // Serial << endl;
-
+        // Check for hotspots and publish events
         for(int i = 0; i < NUM_PIXELS; i++) {
-            // need to adjust this so that it finds average of all hot spots, while eliminating outliers
-            // rather than looking for first hot pixel in array
-            if (Frame [i] > 50.0) { 
+            if (Frame[i] > 50.0f) { 
                 fire.put(true);
                 Serial << "Hot Spot Detected at Pixel " << i << " with Temperature " << Frame[i] << endl;
-                if(i+1 % 24 == 0) {
-                    int n = (i / 24);
-                    
-                    // map index to angle away from center of vision
-
-                }
             }
         }
-            
         
         vTaskDelay(125);
-
     }
 
 }

@@ -6,24 +6,24 @@
  */
 #include <Arduino.h>
 #include "PrintStream.h"
-// #include "shares.h"
-// #include "taskshare.h"
+#include "shares.h"
+#include "taskshare.h"
 // #include "DRV8871Driver.h"
 // #include <ESP32Encoder.h>
 // #include "task_motorControl.h"
 // #include "task_tempTask.h"
 #include "MLX90640.h"
 #include "task_read_camera.h"
+#include "task_webserver.h"
 
 // Share<int32_t> panRefCount("PanRefCount");
 // Share<int32_t> tiltRefCount("TiltRefCount");
-// Share<bool> fire("Fire");
-
-
+Share<bool> fire("Fire");
 
 void setup() {
     Serial.begin(115200);
     while(!Serial);
+    delay(100);
     // xTaskCreate(task_motorControl,
     //             "Motor Control Task",
     //             4096,
@@ -42,6 +42,8 @@ void setup() {
                 NULL,
                 1,
                 NULL);
+    setup_wifi();
+    xTaskCreate(task_webserver,"IoT Task",8192,NULL,1,NULL);
 }
 
 void loop() {
