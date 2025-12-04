@@ -15,8 +15,8 @@
 
 
 const int THERM_W = 32;
-const int THERM_H = 24;
-float Frame[THERM_W * THERM_H];
+const int THERM_H =24;
+
 
 const char* ssid = "EMBER";
 const char* password = "_EMBER_3374";
@@ -75,99 +75,172 @@ void HTML_header (String& a_string, const char* page_title)
 void handle_DocumentRoot ()
 {
     Serial << "HTTP request from client #" << server.client () << endl;
-
-    String a_str;
-    HTML_header (a_str, "ESP32 Web Server Test");
-    a_str += "<body>\n<div id=\"webpage\">\n";
-    a_str += "<h1>EMBER</h1>\n";
-    a_str += "Some subtitle\n";
-    a_str += "<p><p> <a href=\"/toggle\">Toggle LED</a>\n";
-    a_str += "<p><p> <a href=\"/csv\">Show some data in CSV format</a>\n";
-    a_str += "</div>\n</body>\n</html>\n";
+    bool refreshYN = false;
+    // String a_str;
+    // HTML_header (a_str, "ESP32 Web Server Test");
+    // a_str += "<body>\n<div id=\"webpage\">\n";
+    // a_str += "<h1>EMBER</h1>\n";
+    // a_str += "Some subtitle\n";
+    // a_str += "<p><p> <a href=\"/toggle\">Toggle LED</a>\n";
+    // a_str += "<p><p> <a href=\"/csv\">Show some data in CSV format</a>\n";
+    // a_str += "</div>\n</body>\n</html>\n";
 
     //server.send (200, "text/html", a_str); 
-    server.send(200, "text/html", R"rawliteral(
-        <!DOCTYPE html>
-        <html>
-        <head>
-        <meta charset="utf-8">
-        <title>ESP32 Thermal Viewer</title>
-        <style>
-            body { font-family: sans-serif; background: #111; color: #eee; text-align:center; }
-            canvas { image-rendering: pixelated; border: 1px solid #555; margin-top: 20px; }
-        </style>
-        </head>
-        <body>
-        <h1>Thermal Camera</h1>
-        <canvas id="thermCanvas" width="320" height="240"></canvas>
-        <script>
-            const canvas = document.getElementById('thermCanvas');
-            const ctx = canvas.getContext('2d');
-
-            let srcW = 0;
-            let srcH = 0;
-
-            async function fetchFrame() {
-            try {
-                const res = await fetch('/thermal');
-                const json = await res.json();
-                const w = json.w;
-                const h = json.h;
-                const data = json.data;
-                srcW = w;
-                srcH = h;
-
-                // Compute min/max (for auto scaling)
-                let min = Infinity, max = -Infinity;
-                for (let i = 0; i < data.length; i++) {
-                if (data[i] < min) min = data[i];
-                if (data[i] > max) max = data[i];
+    if (fire.get() == false) {
+        refreshYN = false;
+        server.send(200, "text/html", R"rawliteral(
+            <!DOCTYPE html>
+            <html>
+            <head>
+            <meta charset="utf-8">
+            <title>EMBER Thermal Viewer</title>
+            <style>
+                body { font-family: sans-serif; background: #111; color: #eee; text-align:center; padding: 20px; }
+                #container { display: flex; justify-content: center; align-items: center; gap: 30px; margin-top: 30px; }
+                #leftPanel { display: flex; flex-direction: column; align-items: center; }
+                canvas { image-rendering: pixelated; border: 2px solid #555; }
+                #rightPanel { display: flex; gap: 10px; align-items: center; }
+                #scaleBar { 
+                    width: 40px; 
+                    height: 320px; 
+                    border: 2px solid #aaa; 
+                    background: linear-gradient(to top, rgb(0,0,255), rgb(0,255,0), rgb(255,255,0), rgb(255,128,0), rgb(255,0,0));
                 }
-                // Avoid division by zero
-                if (max === min) { max = min + 0.0001; }
+                #scaleLabels { 
+                    display: flex; 
+                    flex-direction: column; 
+                    justify-content: space-between; 
+                    height: 320px; 
+                    text-align: left;
+                    font-size: 14px;
+                    min-width: 70px;
+                }
+                .scaleLabel { font-weight: bold; }
+                #tempDisplay { font-size: 18px; margin-top: 20px; font-weight: bold; }
+            </style>
+            </head>
+            <body>
+            <h1>Thermal Camera</h1>
+            <div id="container">
+                <div id="leftPanel">
+                    <canvas id="thermCanvas" width="240" height="320"></canvas>
+                </div>
+                <div id="rightPanel">
+                    <div id="scaleBar"></div>
+                    <div id="scaleLabels">
+                        <span class="scaleLabel" id="maxLabel">Max: --°C</span>
+                        <span class="scaleLabel" id="midLabel">Mid: --°C</span>
+                        <span class="scaleLabel" id="minLabel">Min: --°C</span>
+                    </div>
+                </div>
+            </div>
+            <div id="tempDisplay">Temperature Range: -- °C to -- °C</div>
+            <script>
+                const canvas = document.getElementById('thermCanvas');
+                const ctx = canvas.getContext('2d');
+                const maxLabel = document.getElementById('maxLabel');
+                const midLabel = document.getElementById('midLabel');
+                const minLabel = document.getElementById('minLabel');
+                const tempDisplay = document.getElementById('tempDisplay');
 
-                const img = ctx.createImageData(w, h);
-                for (let i = 0; i < data.length; i++) {
-                const t = data[i];
-                const norm = (t - min) / (max - min); // 0..1
-                const idx = i * 4;
+                let srcW = 0;
+                let srcH = 0;
 
-                // Simple blue→red gradient
-                const r = Math.floor(255 * norm);
-                const g = Math.floor(255 * Math.max(0, 1 - 2 * Math.abs(norm - 0.5)));
-                const b = Math.floor(255 * (1 - norm));
+                async function fetchFrame() {
+                try {
+                    const res = await fetch('/thermal');
+                    const json = await res.json();
+                    const w = json.w;
+                    const h = json.h;
+                    const data = json.data;
+                    srcW = w;
+                    srcH = h;
 
-                img.data[idx + 0] = r;
-                img.data[idx + 1] = g;
-                img.data[idx + 2] = b;
-                img.data[idx + 3] = 255; // alpha
+                    // Compute min/max (for auto scaling)
+                    let min = Infinity, max = -Infinity;
+                    for (let i = 0; i < data.length; i++) {
+                    if (data[i] < min) min = data[i];
+                    if (data[i] > max) max = data[i];
+                    }
+                    // Avoid division by zero
+                    if (max === min) { max = min + 0.0001; }
+
+                    // Update scale labels
+                    const mid = (min + max) / 2;
+                    maxLabel.textContent = 'Max: ' + max.toFixed(1) + '°C';
+                    midLabel.textContent = 'Mid: ' + mid.toFixed(1) + '°C';
+                    minLabel.textContent = 'Min: ' + min.toFixed(1) + '°C';
+                    tempDisplay.textContent = `Temperature Range: ${min.toFixed(1)} °C to ${max.toFixed(1)} °C`;
+
+                    const img = ctx.createImageData(w, h);
+                    for (let i = 0; i < data.length; i++) {
+                    const t = data[i];
+                    const norm = (t - min) / (max - min); // 0..1
+                    const idx = i * 4;
+
+                    // Simple blue→red gradient
+                    const r = Math.floor(255 * norm);
+                    const g = Math.floor(255 * Math.max(0, 1 - 2 * Math.abs(norm - 0.5)));
+                    const b = Math.floor(255 * (1 - norm));
+
+                    img.data[idx + 0] = r;
+                    img.data[idx + 1] = g;
+                    img.data[idx + 2] = b;
+                    img.data[idx + 3] = 255; // alpha
+                    }
+
+                    // Draw low-res image to an offscreen canvas and scale up
+                    const off = document.createElement('canvas');
+                    off.width = w;
+                    off.height = h;
+                    const offCtx = off.getContext('2d');
+                    offCtx.putImageData(img, 0, 0);
+
+                    // Clear and draw scaled with 90° CCW rotation so the long axis is vertical
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.imageSmoothingEnabled = false;
+                    ctx.save();
+                    // Move origin to bottom-left and rotate -90deg (CCW)
+                    ctx.translate(0, canvas.height);
+                    ctx.rotate(-Math.PI / 2);
+                    // Draw offscreen image scaled; width/height swapped due to rotation
+                    ctx.drawImage(off, 0, 0, canvas.height, canvas.width);
+                    ctx.restore();
+
+                } catch (e) {
+                    console.error(e);
+                } finally {
+                    // Get next frame
+                    setTimeout(fetchFrame, 100); // 10 FPS
+                }
                 }
 
-                // Draw low-res image to an offscreen canvas and scale up
-                const off = document.createElement('canvas');
-                off.width = w;
-                off.height = h;
-                const offCtx = off.getContext('2d');
-                offCtx.putImageData(img, 0, 0);
-
-                // Clear and draw scaled
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.imageSmoothingEnabled = false;
-                ctx.drawImage(off, 0, 0, canvas.width, canvas.height);
-
-            } catch (e) {
-                console.error(e);
-            } finally {
-                // Get next frame
-                setTimeout(fetchFrame, 100); // 10 FPS
-            }
-            }
-
-            fetchFrame();
-        </script>
-        </body>
-        </html>
-        )rawliteral");
+                fetchFrame();
+            </script>
+            </body>
+            </html>
+            )rawliteral");
+        }
+        else {
+            server.send(200, "text/html", R"rawliteral(
+            <!DOCTYPE html>
+            <html>
+            <head>
+            <meta charset="utf-8">
+            <title>EMBER Thermal Viewer - FIRE DETECTED</title>
+            <style>
+                body { font-family: sans-serif; background: #ff9d00ff; color: #1f0000ff; text-align:center; padding: 20px; }
+                h1 { color: red; }
+            </style>
+            </head>
+            <body>
+            <h1>FIRE DETECTED!</h1>
+            <p>The thermal camera has detected a fire.</p>
+            </body>
+            </html>
+            )rawliteral");
+        }
+        
 }
 
 
@@ -217,7 +290,7 @@ void task_webserver (void* p_params)
     // Get the web server running
     server.begin ();
     Serial.println ("HTTP server started");
-
+    server.sendHeader("refresh", "10");
     for (;;)
     {
         // The web server must be periodically run to watch for page requests

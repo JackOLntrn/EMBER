@@ -10,5 +10,5 @@
  #define _task_read_camera_h
 
  void task_read_camera(void* p_params);
- //float Frame[768]; // place frame in static memory to avoid large stack usage
+ 
  #endif
