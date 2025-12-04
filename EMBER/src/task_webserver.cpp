@@ -86,7 +86,7 @@ void handle_DocumentRoot ()
     // a_str += "</div>\n</body>\n</html>\n";
 
     //server.send (200, "text/html", a_str); 
-    if (fire.get() == false) {
+    // if (fire.get() == false) {
         refreshYN = false;
         server.send(200, "text/html", R"rawliteral(
             <!DOCTYPE html>
@@ -220,26 +220,26 @@ void handle_DocumentRoot ()
             </body>
             </html>
             )rawliteral");
-        }
-        else {
-            server.send(200, "text/html", R"rawliteral(
-            <!DOCTYPE html>
-            <html>
-            <head>
-            <meta charset="utf-8">
-            <title>EMBER Thermal Viewer - FIRE DETECTED</title>
-            <style>
-                body { font-family: sans-serif; background: #ff9d00ff; color: #1f0000ff; text-align:center; padding: 20px; }
-                h1 { color: red; }
-            </style>
-            </head>
-            <body>
-            <h1>FIRE DETECTED!</h1>
-            <p>The thermal camera has detected a fire.</p>
-            </body>
-            </html>
-            )rawliteral");
-        }
+        // }
+        // else {
+        //     server.send(200, "text/html", R"rawliteral(
+        //     <!DOCTYPE html>
+        //     <html>
+        //     <head>
+        //     <meta charset="utf-8">
+        //     <title>EMBER Thermal Viewer - FIRE DETECTED</title>
+        //     <style>
+        //         body { font-family: sans-serif; background: #ff9d00ff; color: #1f0000ff; text-align:center; padding: 20px; }
+        //         h1 { color: red; }
+        //     </style>
+        //     </head>
+        //     <body>
+        //     <h1>FIRE DETECTED!</h1>
+        //     <p>The thermal camera has detected a fire.</p>
+        //     </body>
+        //     </html>
+        //     )rawliteral");
+        // }
         
 }
 

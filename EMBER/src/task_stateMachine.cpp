@@ -26,6 +26,7 @@ void task_stateMachine(void* p_params) {
     uint8_t state = 0;
     uint8_t hour = 0;
     uint8_t panInd, tiltInd;
+    int32_t rawPanCount, rawTiltCount;
     pinMode(5, OUTPUT); // solenoid pin for spraying 
     bool one_time_val = false;
     long now;
@@ -60,8 +61,17 @@ void task_stateMachine(void* p_params) {
                 panInd = hotIndex.get() / WIDTH; // getting pixel index in pan direction 
 
                 // setting pan and tilt reference counts based on hot spot location
-                panRefCount.put(enc1.getCount() + (panInd - WIDTH / 2) * CPP*4);
-                tiltRefCount.put(enc2.getCount() + (tiltInd - HEIGHT / 2) * CPP);
+
+                rawPanCount = enc1.getCount() + (panInd - WIDTH / 2) * CPP*4;
+                rawTiltCount = enc2.getCount() + (tiltInd - HEIGHT / 2) * CPP;
+
+                if (rawPanCount < 0) rawPanCount = 0;
+                if (rawTiltCount < 0) rawTiltCount = 0;
+                if (rawTiltCount > 1048) rawTiltCount = 1048; // limit tilt to max count
+                if (rawPanCount > 4192*4) rawPanCount = 4192*4; // limit pan to max count
+
+                panRefCount.put(rawPanCount);
+                tiltRefCount.put(rawTiltCount);
 
                 // if hot spot is near center, begin spraying
                 if (panInd > (WIDTH / 2 - 2) && panInd < (WIDTH / 2 + 2) &&
@@ -91,7 +101,7 @@ void task_stateMachine(void* p_params) {
                 break;
         }
 
-        vTaskDelay(100);
+        vTaskDelay(10);
     }
 
 }

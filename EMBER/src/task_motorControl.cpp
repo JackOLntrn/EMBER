@@ -12,12 +12,12 @@
 #include "PrintStream.h"
 #include "shares.h"
 
-#define MAXSPEED 100
+#define MAXSPEED 180
 #define DEADBAND 10
-#define Kp1 7
-#define Kd1 3.4
+#define Kp1 -7
+#define Kd1 -4
 #define Kp2 -7
-#define Kd2 -3.4
+#define Kd2 -4
 
 
  
@@ -34,10 +34,10 @@
 
     
     //initialize motors and encoders
-    DRV8871Driver Motor1(16,17); 
-    DRV8871Driver Motor2(12,13);
-    enc2.attachHalfQuad(34,35);
+    DRV8871Driver Motor1(16,17);
+    DRV8871Driver Motor2(12,13); 
     enc1.attachHalfQuad(32,33);
+    enc2.attachHalfQuad(34,35);
     // ensure motors are stopped at startup
     Motor1.brakeMotor();
     Motor2.brakeMotor();
