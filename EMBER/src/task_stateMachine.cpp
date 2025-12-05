@@ -26,13 +26,13 @@ void task_stateMachine(void* p_params) {
     uint8_t state = 0;
     uint8_t hour = 0;
     uint8_t panInd, tiltInd;
-    int32_t rawPanCount, rawTiltCount;
     pinMode(5, OUTPUT); // solenoid pin for spraying 
     bool one_time_val = false;
     long now;
+    int16_t panIndAway;
 
     while(true) {
-        
+        // Serial << "state: " << state << " ";
         switch(state) {
             case 0:
                 // init state
@@ -51,46 +51,47 @@ void task_stateMachine(void* p_params) {
                 } 
 
                 Serial << "scanning... " << endl;
-                delay(500);
-                fire.put(true);
-                // scanning state
+                
+
                 break;
             case 2:
-                Serial << "attacking the fire" << endl;
                 tiltInd = hotIndex.get() % WIDTH; // getting pixel index in tilt direction
                 panInd = hotIndex.get() / WIDTH; // getting pixel index in pan direction 
 
                 // setting pan and tilt reference counts based on hot spot location
 
-                rawPanCount = enc1.getCount() + (panInd - WIDTH / 2) * CPP*4;
-                rawTiltCount = enc2.getCount() + (tiltInd - HEIGHT / 2) * CPP;
+                panIndAway = (panInd-HEIGHT/2);
+                if (abs(panIndAway) < 3) {
+                    panIndAway = 0;
+                }
 
-                if (rawPanCount < 0) rawPanCount = 0;
-                if (rawTiltCount < 0) rawTiltCount = 0;
-                if (rawTiltCount > 1048) rawTiltCount = 1048; // limit tilt to max count
-                if (rawPanCount > 4192*4) rawPanCount = 4192*4; // limit pan to max count
+                panRefCount.put(enc1.getCount() + panIndAway*CPP*50/22);
+                
+                if (abs(enc2.getCount()) < 10) {
+                    tiltRefCount.put(524);
+                }
+                else if (abs(enc2.getCount() - 524) < 10) {
+                    tiltRefCount.put(0);
+                }
 
-                panRefCount.put(rawPanCount);
-                tiltRefCount.put(rawTiltCount);
 
-                // if hot spot is near center, begin spraying
-                if (panInd > (WIDTH / 2 - 2) && panInd < (WIDTH / 2 + 2) &&
-                    tiltInd > (HEIGHT / 2 - 2) && tiltInd < (HEIGHT / 2 + 2)) {
+                if (panIndAway == 0 && fire.get() && !one_time_val) {
+                    Serial << "Activating Spray!" << endl;
                     spray.put(true);
                     digitalWrite(5, HIGH); // activate solenoid
-                    if (!one_time_val) {
-                        now = millis();
-                        one_time_val = true;
-                    }
-                } 
-                
-                // spray for 2 seconds and check if fire is still present
-                if (fire.get() == false && (millis() - now) > 2000) {
-                    spray.put(false);
-                    digitalWrite(5, LOW); 
-                    one_time_val = false;
-                    state = 1;
+                    one_time_val = true;
+                    now = millis();
                 }
+
+                if (millis() - now > 10000 && one_time_val) {
+                    Serial << "Deactivating Spray!" << endl;
+                    spray.put(false);
+                    digitalWrite(5, LOW); // deactivate solenoid
+                    one_time_val = false;
+                    Motor2.brakeMotor();
+                }
+                
+                
 
                 break;
             case 3:
@@ -101,7 +102,7 @@ void task_stateMachine(void* p_params) {
                 break;
         }
 
-        vTaskDelay(10);
+        vTaskDelay(100);
     }
 
 }

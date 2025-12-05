@@ -25,6 +25,8 @@ Share<uint16_t> hotIndex("HotIndex");
 ESP32Encoder enc1;
 ESP32Encoder enc2;
 float Frame[768];
+DRV8871Driver Motor1(16,17);
+DRV8871Driver Motor2(12,13);
 
 void setup() {
     Serial.begin(115200);
@@ -54,7 +56,7 @@ void setup() {
                 "State Machine Task",
                 4096,
                 NULL,
-                10,
+                4,
                 NULL);
 }
 

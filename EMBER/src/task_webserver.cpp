@@ -196,6 +196,22 @@ void handle_DocumentRoot ()
                     const offCtx = off.getContext('2d');
                     offCtx.putImageData(img, 0, 0);
 
+                    // Draw marker for hot pixel (if provided)
+                    const hot = json.hot;
+                    if (typeof hot !== 'undefined' && hot !== null && hot >= 0) {
+                        const hx = hot % w;
+                        const hy = Math.floor(hot / w);
+                        // Draw a small crosshair in white on the offscreen (low-res) canvas
+                        offCtx.strokeStyle = 'white';
+                        offCtx.lineWidth = 1;
+                        offCtx.beginPath();
+                        offCtx.moveTo(hx - 1 + 0.5, hy + 0.5);
+                        offCtx.lineTo(hx + 2 + 0.5, hy + 0.5);
+                        offCtx.moveTo(hx + 0.5, hy - 1 + 0.5);
+                        offCtx.lineTo(hx + 0.5, hy + 2 + 0.5);
+                        offCtx.stroke();
+                    }
+
                     // Clear and draw scaled with 90° CCW rotation so the long axis is vertical
                     ctx.clearRect(0, 0, canvas.width, canvas.height);
                     ctx.imageSmoothingEnabled = false;
@@ -264,6 +280,9 @@ void handle_Thermal() {
     arr.add(Frame[i]);
   }
 
+    // Include the current hot pixel index so web UI can highlight it
+    doc["hot"] = hotIndex.get();
+
   String out;
   serializeJson(doc, out);
 
@@ -295,6 +314,6 @@ void task_webserver (void* p_params)
     {
         // The web server must be periodically run to watch for page requests
         server.handleClient ();
-        vTaskDelay (500);
+        vTaskDelay (100);
     }
 }

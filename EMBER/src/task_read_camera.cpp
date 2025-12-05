@@ -34,7 +34,8 @@ Adafruit_MLX90640 mlx;
  *  Returns weighted average index (useful for positioning)
  */
 void findHotBlob(const float* frame, uint16_t seedIdx, float tempThreshold, 
-                 uint16_t& outCentroidIdx, float& outMaxTemp, float& outAvgTemp)
+                 uint16_t& outCentroidIdx, float& outMaxTemp, float& outAvgTemp,
+                 uint16_t& outSize, float& outCentroidX, float& outCentroidY)
 {
     // 32x24 grid
     const uint16_t W = 32;
@@ -107,9 +108,12 @@ void findHotBlob(const float* frame, uint16_t seedIdx, float tempThreshold,
     }
     
     // Compute weighted centroid
+    outSize = qtail;
     if (totalWeight > 0) {
         float centX = sumWeightedX / totalWeight;
         float centY = sumWeightedY / totalWeight;
+        outCentroidX = centX;
+        outCentroidY = centY;
         // Find nearest actual pixel to centroid
         float minDist = 1e9f;
         outCentroidIdx = seedIdx;
@@ -126,10 +130,12 @@ void findHotBlob(const float* frame, uint16_t seedIdx, float tempThreshold,
                 }
             }
         }
-        outAvgTemp = sumTemp / (float)qtail;  // average of all pixels in blob
+        outAvgTemp = sumTemp / (float)outSize;  // average of all pixels in blob
     } else {
         outCentroidIdx = seedIdx;
         outAvgTemp = frame[seedIdx];
+        outCentroidX = seedIdx % W;
+        outCentroidY = seedIdx / W;
     }
 }
 
@@ -165,32 +171,75 @@ void task_read_camera(void* p_params) {
             }
 
             // If hottest pixel is above threshold, find the hot blob around it
-            if (highestTemp > 45) {
+                // If hottest pixel is above threshold, find the hot blob around it
+                // Lowered threshold to 35°C to be more sensitive
+                if (highestTemp > 35) {
                 uint16_t blobCentroid = maxIndex;
                 float blobMaxTemp = highestTemp;
                 float blobAvgTemp = highestTemp;
-                
+                uint16_t blobSize = 0;
+                float blobCentX = 0.0f, blobCentY = 0.0f;
+
                 // Find connected blob of pixels >= 40°C around the hotspot
-                findHotBlob(Frame, maxIndex, 40.0f, blobCentroid, blobMaxTemp, blobAvgTemp);
-                
-                hotIndex.put(blobCentroid);
-                
-                if (blobMaxTemp > 50) {
+                    // Find connected blob of pixels >= 35°C around the hotspot (more sensitive)
+                    findHotBlob(Frame, maxIndex, 35.0f, blobCentroid, blobMaxTemp, blobAvgTemp, blobSize, blobCentX, blobCentY);
+
+                // Temporal smoothing (exponential moving average) on centroid to reduce jitter
+                const float alpha = 0.25f; // smoothing factor (0..1), smaller = smoother
+                static float smoothX = 0.0f, smoothY = 0.0f;
+                static bool smoothInit = false;
+                if (!smoothInit) {
+                    smoothX = blobCentX;
+                    smoothY = blobCentY;
+                    smoothInit = true;
+                } else {
+                    smoothX = alpha * blobCentX + (1.0f - alpha) * smoothX;
+                    smoothY = alpha * blobCentY + (1.0f - alpha) * smoothY;
+                }
+
+                // Round smoothed position to nearest pixel index
+                uint16_t smoothXi = (uint16_t)constrain((int)roundf(smoothX), 0, 31);
+                uint16_t smoothYi = (uint16_t)constrain((int)roundf(smoothY), 0, 23);
+                uint16_t smoothIdx = smoothYi * 32 + smoothXi;
+
+                // Only update hotIndex if blob is reasonably large or sufficiently hot
+                // Update hotIndex if we have at least one pixel in the blob
+                // (smoothing reduces jitter from single-pixel noise)
+                if (blobSize >= 1) {
+                    hotIndex.put(smoothIdx);
+                }
+
+                if (blobMaxTemp > 33.0f) {
                     fire.put(true);
                 }
             } else {
-                hotIndex.put(maxIndex);
-                
-                if (highestTemp > 50) {
+                // No significant blob: fallback to single-pixel smoothing
+                static float smoothX = 0.0f, smoothY = 0.0f;
+                static bool smoothInit = false;
+                float px = maxIndex % 32;
+                float py = maxIndex / 32;
+                const float alpha = 0.25f;
+                if (!smoothInit) {
+                    smoothX = px; smoothY = py; smoothInit = true;
+                } else {
+                    smoothX = alpha * px + (1.0f - alpha) * smoothX;
+                    smoothY = alpha * py + (1.0f - alpha) * smoothY;
+                }
+                uint16_t smoothXi = (uint16_t)constrain((int)roundf(smoothX), 0, 31);
+                uint16_t smoothYi = (uint16_t)constrain((int)roundf(smoothY), 0, 23);
+                uint16_t smoothIdx = smoothYi * 32 + smoothXi;
+                hotIndex.put(smoothIdx);
+
+                if (highestTemp > 33.0f) {
                     fire.put(true);
                 }
             }
             
-            if (highestTemp < 45 && fire.get() && nframes > 5 ) {
+            if (highestTemp < 30.0 && fire.get() && nframes > 5 ) {
                 fire.put(false);
                 nframes = 0;
             }
-            else if (highestTemp < 45 && fire.get()) {
+            else if (highestTemp < 33.0 && fire.get()) {
                 nframes++;
             }
         }
