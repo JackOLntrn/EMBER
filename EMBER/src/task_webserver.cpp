@@ -117,9 +117,44 @@ void handle_DocumentRoot ()
                 }
                 .scaleLabel { font-weight: bold; }
                 #tempDisplay { font-size: 18px; margin-top: 20px; font-weight: bold; }
+                
+                /* Fire alert styles */
+                @keyframes flashOrange {
+                    0% { background: #111; }
+                    50% { background: #ff8800; }
+                    100% { background: #111; }
+                }
+                body.fire-alert {
+                    animation: flashOrange 0.6s infinite;
+                }
+                #fireWarning {
+                    display: none;
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    font-size: 48px;
+                    font-weight: bold;
+                    color: #ff0000;
+                    text-shadow: 3px 3px 6px rgba(0,0,0,0.8);
+                    background: rgba(255, 136, 0, 0.9);
+                    padding: 30px 60px;
+                    border-radius: 10px;
+                    z-index: 1000;
+                    animation: fireFlash 0.6s infinite;
+                }
+                @keyframes fireFlash {
+                    0% { opacity: 1; }
+                    50% { opacity: 0.6; }
+                    100% { opacity: 1; }
+                }
+                body.fire-alert #fireWarning {
+                    display: block;
+                }
             </style>
             </head>
             <body>
+            <div id="fireWarning">WARNING FIRE DETECTED</div>
             <h1>Thermal Camera</h1>
             <div id="container">
                 <div id="leftPanel">
@@ -289,6 +324,17 @@ void handle_Thermal() {
   server.send(200, "application/json", out);
 }
 
+// Serve fire state as JSON
+void handle_Fire() {
+  DynamicJsonDocument doc(128);
+  doc["fire"] = fire.get();
+
+  String out;
+  serializeJson(doc, out);
+
+  server.send(200, "application/json", out);
+}
+
 
 /** @brief task which sets up and runs a web server
  *  @details function @c handleClient() must be called periodically to 
@@ -304,6 +350,7 @@ void task_webserver (void* p_params)
     server.on ("/", handle_DocumentRoot);
     // server.on ("/toggle", handle_Toggle_LED);
     server.on ("/thermal", handle_Thermal);
+    server.on ("/fire", handle_Fire);
     server.onNotFound (handle_NotFound);
 
     // Get the web server running

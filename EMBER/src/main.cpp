@@ -22,6 +22,7 @@ Share<int32_t> tiltRefCount("TiltRefCount");
 Share<bool> fire("Fire");
 Share<bool> spray("Spray");
 Share<uint16_t> hotIndex("HotIndex");
+Share<uint8_t> systemState("SystemState");
 ESP32Encoder enc1;
 ESP32Encoder enc2;
 float Frame[768];
@@ -29,6 +30,13 @@ DRV8871Driver Motor1(16,17);
 DRV8871Driver Motor2(12,13);
 
 void setup() {
+    
+    pinMode(5, OUTPUT);
+    digitalWrite(5, LOW);
+    delay(1000);
+
+    Motor2.brakeMotor();
+    Motor1.brakeMotor();
     Serial.begin(115200);
     while(!Serial);
     delay(100);

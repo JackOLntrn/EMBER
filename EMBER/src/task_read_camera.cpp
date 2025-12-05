@@ -11,8 +11,13 @@
 #include <Wire.h>
 #include "shares.h"
 #include "task_webserver.h"
-#include <adafruit_mlx90640.h>
+#include "adafruit_mlx90640.h"
 
+// Temperature thresholds for hotblob detection and fire alerts (°C)
+#define HOTBLOB_DETECT_THRESHOLD 35.0f     // Trigger blob detection when hottest pixel exceeds this
+#define HOTBLOB_INCLUSION_THRESHOLD 34.0f  // Include neighboring pixels >= this temp in blob
+#define FIRE_ALERT_THRESHOLD 50.0f         // Trigger fire alert when blob max temp exceeds this
+#define FIRE_COOLDOWN_THRESHOLD 40.0f      // Turn off fire alert when temp drops below this
 
 #define NUM_PIXELS 768
 
@@ -171,18 +176,15 @@ void task_read_camera(void* p_params) {
             }
 
             // If hottest pixel is above threshold, find the hot blob around it
-                // If hottest pixel is above threshold, find the hot blob around it
-                // Lowered threshold to 35°C to be more sensitive
-                if (highestTemp > 35) {
+            if (highestTemp > HOTBLOB_DETECT_THRESHOLD) {
                 uint16_t blobCentroid = maxIndex;
                 float blobMaxTemp = highestTemp;
                 float blobAvgTemp = highestTemp;
                 uint16_t blobSize = 0;
                 float blobCentX = 0.0f, blobCentY = 0.0f;
 
-                // Find connected blob of pixels >= 40°C around the hotspot
-                    // Find connected blob of pixels >= 35°C around the hotspot (more sensitive)
-                    findHotBlob(Frame, maxIndex, 35.0f, blobCentroid, blobMaxTemp, blobAvgTemp, blobSize, blobCentX, blobCentY);
+                // Find connected blob of pixels >= HOTBLOB_INCLUSION_THRESHOLD around the hotspot
+                findHotBlob(Frame, maxIndex, HOTBLOB_INCLUSION_THRESHOLD, blobCentroid, blobMaxTemp, blobAvgTemp, blobSize, blobCentX, blobCentY);
 
                 // Temporal smoothing (exponential moving average) on centroid to reduce jitter
                 const float alpha = 0.25f; // smoothing factor (0..1), smaller = smoother
@@ -203,13 +205,13 @@ void task_read_camera(void* p_params) {
                 uint16_t smoothIdx = smoothYi * 32 + smoothXi;
 
                 // Only update hotIndex if blob is reasonably large or sufficiently hot
-                // Update hotIndex if we have at least one pixel in the blob
-                // (smoothing reduces jitter from single-pixel noise)
-                if (blobSize >= 1) {
+                if (blobSize >= 2 || blobMaxTemp > 48.0f) {
                     hotIndex.put(smoothIdx);
+                } else {
+                    // small blob - do not update to avoid noise
                 }
 
-                if (blobMaxTemp > 33.0f) {
+                if (blobMaxTemp > FIRE_ALERT_THRESHOLD) {
                     fire.put(true);
                 }
             } else {
@@ -230,16 +232,16 @@ void task_read_camera(void* p_params) {
                 uint16_t smoothIdx = smoothYi * 32 + smoothXi;
                 hotIndex.put(smoothIdx);
 
-                if (highestTemp > 33.0f) {
+                if (highestTemp > 50) {
                     fire.put(true);
                 }
             }
             
-            if (highestTemp < 30.0 && fire.get() && nframes > 5 ) {
+            if (highestTemp < FIRE_COOLDOWN_THRESHOLD && fire.get() && nframes > 5 ) {
                 fire.put(false);
                 nframes = 0;
             }
-            else if (highestTemp < 33.0 && fire.get()) {
+            else if (highestTemp < HOTBLOB_DETECT_THRESHOLD && fire.get()) {
                 nframes++;
             }
         }

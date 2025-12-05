@@ -13,7 +13,7 @@
 #include "shares.h"
 #include <Preferences.h>
 
-#define MAXSPEED 180
+#define MAXSPEED 220
 #define DEADBAND 10
 #define Kp1 7
 #define Kd1 4
@@ -46,6 +46,17 @@
     P1 = 0;
     P2 = 0;
     int16_t panSpeed, tiltSpeed;
+    
+    // Scanning mode state
+    static bool moveToMax = true; // direction flag for velocity sweep
+    static long prevPanCount = 0;
+    static float prevErr = 0;
+    static float integralErr = 0;  // integral of velocity error
+    const float Kpv = 10.0f;  // velocity proportional gain
+    const float Kdv = 0.0f;  // velocity derivative gain
+    const float Kiv = 2.0f;  // velocity integral gain
+    const int8_t desiredVel = 8;  // desired velocity in counts/10ms
+    const int16_t EDGE_THRESHOLD = 200;  // counts from edge to trigger direction flip
 
     while(true){
         rawPRC = panRefCount.get();
@@ -53,74 +64,64 @@
         if (rawPRC < -4764) {
             rawPRC = -4764;
         }
-        if (rawTRC < 0) {
+        if (rawTRC > 0) {
             rawTRC = 0;
         }
-        if (rawTRC > 1048) {
-            rawTRC = 1048;
+        if (rawTRC < -524) {
+            rawTRC = -524;
         } 
         if (rawPRC > 4764) {
             rawPRC = 4764;
         }
 
-        if (spray.get()) {
-            // spray motion
-            // need to tune these values
-            //panSpeed = MAXSPEED * sin(millis() / 1000);
-            panErr = rawPRC -enc1.getCount();
-            tiltErr = rawTRC - enc2.getCount();
-
-            D1 = (panErr - P1)*10;
-            P1 = panErr;
-            D2 = (tiltErr - P2)*10;
-            P2 = tiltErr;
-
-            panSpeed = P1*Kp1 + D1*Kd1;
-            tiltSpeed = P2*Kp2 + D2*Kd2;
+        Serial << "Raw PRC: " << rawPRC;
 
             
+        panErr = rawPRC - enc1.getCount();
+        tiltErr = rawTRC - enc2.getCount();
+
+        // Check if we're in scanning mode (when reference is at an extreme value)
+        // If close to edge, use velocity control to sweep back and forth
+        if ((rawPRC >= 4744 || rawPRC <= -4744) && !fire.get()) {
+            // Scanning mode: velocity sweep between edges
+            long currentPanCount = enc1.getCount();
+            int8_t currentVel = (currentPanCount - prevPanCount) / 10;  // counts per 10ms tick
+            int8_t desiredVelSigned = moveToMax ? desiredVel : -desiredVel;
+            int8_t velErr = desiredVelSigned - currentVel;
+            
+            // Accumulate integral error
+            integralErr += velErr;
+            // Anti-windup: clamp integral term
+            if (integralErr > 100.0f) integralErr = 100.0f;
+            if (integralErr < -100.0f) integralErr = -100.0f;
+            
+            float dVel = velErr - prevErr;
+            prevErr = velErr;
+            
+            panSpeed = (int16_t)(velErr * Kpv + dVel * Kdv + integralErr * Kiv);
+            
+            // Clamp to max speed
             if (panSpeed > MAXSPEED) {
                 panSpeed = MAXSPEED;
-            }
-            else if (panSpeed < -MAXSPEED) {
+            } else if (panSpeed < -MAXSPEED) {
                 panSpeed = -MAXSPEED;
             }
-
-            if(tiltSpeed > MAXSPEED) {
-                tiltSpeed = MAXSPEED;
-            }
-            else if (tiltSpeed < -MAXSPEED) {
-                tiltSpeed = -MAXSPEED;
-            }
-
             
-
-            Motor1.driveMotor(abs(panSpeed), panSpeed > 0);
-            Motor2.driveMotor(abs(tiltSpeed), tiltSpeed > 0);
-            //Serial << "Spraying " << endl;
-        }
-        else if (fire.get()) {
+            // Check for direction flip at edges
+            if (currentPanCount >= 4764 - EDGE_THRESHOLD) {
+                moveToMax = false;  // start moving toward min
+                integralErr = 0;    // reset integral on direction flip
+            } else if (currentPanCount <= -4764 + EDGE_THRESHOLD) {
+                moveToMax = true;   // start moving toward max
+                integralErr = 0;    // reset integral on direction flip
+            }
             
-
-            panErr = rawPRC - enc1.getCount();
-            tiltErr = rawTRC - enc2.getCount();
-            // Serial << "PE: " << panErr << " ";
-
+            prevPanCount = currentPanCount;
+        } else {
+            // Fire mode or tracking mode: position control
             D1 = (panErr - P1)*10;
             P1 = panErr;
-            D2 = (tiltErr - P2)*10;
-            P2 = tiltErr;
-
             panSpeed = P1*Kp1 + D1*Kd1;
-            tiltSpeed = P2*Kp2 + D2*Kd2;
-
-            // clamp motor speeds to MAXSPEED
-            if(tiltSpeed > MAXSPEED) {
-                tiltSpeed = MAXSPEED;
-            }
-            else if (tiltSpeed < -MAXSPEED) {
-                tiltSpeed = -MAXSPEED;
-            }
 
             if (panSpeed > MAXSPEED) {
                 panSpeed = MAXSPEED;
@@ -128,34 +129,32 @@
             else if (panSpeed < -MAXSPEED) {
                 panSpeed = -MAXSPEED;
             }
-
-            // drive motors, coasting if within deadband
-            if (abs(panErr) < DEADBAND) {
-                Motor1.coastMotor();
-            }
-            else {
-                Motor1.driveMotor(abs(panSpeed), panSpeed > 0);
-            }
-            
-            if (abs(tiltErr) < DEADBAND) {
-                Motor2.coastMotor();
-            }
-            else {
-                Motor2.driveMotor(abs(tiltSpeed), tiltSpeed > 0);
-            }
         }
-        else {
-            Motor1.coastMotor();
-            Motor2.coastMotor();
 
-           
+        // Tilt always uses position control
+        D2 = (tiltErr - P2)*10;
+        P2 = tiltErr;
+        tiltSpeed = P2*Kp2 + D2*Kd2;
+
+        if(tiltSpeed > MAXSPEED) {
+            tiltSpeed = MAXSPEED;
         }
+        else if (tiltSpeed < -MAXSPEED) {
+            tiltSpeed = -MAXSPEED;
+        }
+
+
+        Motor1.driveMotor(abs(panSpeed), panSpeed > 0);
+        Motor2.driveMotor(abs(tiltSpeed), tiltSpeed < 0);
+        //Serial << "Spraying " << endl;
+
+        
         int32_t tiltRef = tiltRefCount.get();
         long tiltCount = enc2.getCount();
         int32_t panRef = panRefCount.get();
         long panCount = enc1.getCount();
-        //Serial << "tilt ref: " << tiltRef << " | " << tiltCount << endl;
-        // Serial << "TR: " << tiltRef << " | TC: " << tiltCount << " || PR: " << panRef << " | PC: " << panCount << endl;
+        // Serial << "tilt ref: " << tiltRef << " | " << tiltCount << endl;
+        Serial << "TR: " << tiltRef << " | TC: " << tiltCount << " || PR: " << panRef << " | PC: " << panCount << endl;
             
 
         vTaskDelay(10); // Task Period of 10 ms

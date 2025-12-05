@@ -27,6 +27,7 @@ void task_stateMachine(void* p_params) {
     uint8_t hour = 0;
     uint8_t panInd, tiltInd;
     pinMode(5, OUTPUT); // solenoid pin for spraying 
+    digitalWrite(5, LOW);
     bool one_time_val = false;
     long now;
     int16_t panIndAway;
@@ -36,11 +37,12 @@ void task_stateMachine(void* p_params) {
         switch(state) {
             case 0:
                 // init state
-                panRefCount.put(0);
+                panRefCount.put(-4764);
                 tiltRefCount.put(0);
                 fire.put(false);
                 spray.put(false);
                 Serial << "System Initialized" << endl;
+                digitalWrite(5, LOW);
                 state = 1;
                 
                 break;
@@ -49,8 +51,14 @@ void task_stateMachine(void* p_params) {
                     Serial << "Fire Detected" << endl;
                     state = 2;
                 } 
-
+                tiltRefCount.put(0);
                 Serial << "scanning... " << endl;
+                if (enc1.getCount() > 4744) {
+                    panRefCount.put(-4764);
+                }
+                if (enc1.getCount() < -4744) {
+                    panRefCount.put(4764);
+                }
                 
 
                 break;
@@ -67,10 +75,10 @@ void task_stateMachine(void* p_params) {
 
                 panRefCount.put(enc1.getCount() + panIndAway*CPP*50/22);
                 
-                if (abs(enc2.getCount()) < 10) {
-                    tiltRefCount.put(524);
+                if (enc2.getCount() > -20) {
+                    tiltRefCount.put(-524);
                 }
-                else if (abs(enc2.getCount() - 524) < 10) {
+                else if (enc2.getCount() < -504) {
                     tiltRefCount.put(0);
                 }
 
@@ -89,6 +97,13 @@ void task_stateMachine(void* p_params) {
                     digitalWrite(5, LOW); // deactivate solenoid
                     one_time_val = false;
                     Motor2.brakeMotor();
+                }
+
+                if (!fire.get() && !spray.get()) {
+                    Serial << "Fire Out, Returning to Scan" << endl;
+                    panRefCount.put(-4764);
+                    tiltRefCount.put(0);
+                    state = 1;
                 }
                 
                 
