@@ -14,10 +14,10 @@
 #include "adafruit_mlx90640.h"
 
 // Temperature thresholds for hotblob detection and fire alerts (°C)
-#define HOTBLOB_DETECT_THRESHOLD 35.0f     // Trigger blob detection when hottest pixel exceeds this
-#define HOTBLOB_INCLUSION_THRESHOLD 34.0f  // Include neighboring pixels >= this temp in blob
-#define FIRE_ALERT_THRESHOLD 50.0f         // Trigger fire alert when blob max temp exceeds this
-#define FIRE_COOLDOWN_THRESHOLD 40.0f      // Turn off fire alert when temp drops below this
+#define HOTBLOB_DETECT_THRESHOLD 50.0f     // Trigger blob detection when hottest pixel exceeds this
+#define HOTBLOB_INCLUSION_THRESHOLD 49.0f  // Include neighboring pixels >= this temp in blob
+#define FIRE_ALERT_THRESHOLD 70.0f         // Trigger fire alert when blob max temp exceeds this
+#define FIRE_COOLDOWN_THRESHOLD 60.0f      // Turn off fire alert when temp drops below this
 
 #define NUM_PIXELS 768
 
@@ -232,7 +232,7 @@ void task_read_camera(void* p_params) {
                 uint16_t smoothIdx = smoothYi * 32 + smoothXi;
                 hotIndex.put(smoothIdx);
 
-                if (highestTemp > 50) {
+                if (highestTemp > 70) {
                     fire.put(true);
                 }
             }
