@@ -1,5 +1,5 @@
 /** @file task_webserver.h
- * task for running a simple web server to demonstrate IoT functionality
+ * task for running a web server to demonstrate IoT functionality
  * 
  * @author Jackson Cordova
  * @date December 2025

@@ -1,7 +1,7 @@
 /** @file task_read_camera.h
  * task for reading the MLX90640 thermal camera
  * 
- * @author Jackson Cordova
+ * @author Jackson Cordova, GPT5-mini
  * @date November 2025
  */
 
@@ -24,19 +24,23 @@
 
 Adafruit_MLX90640 mlx;
 
-/** @brief task which reads the MLX90640 camera and saves the
- * most recent frame to a share
+
+/** @brief function which finds the centroid of a hot blob in a thermal frame
  * 
- * @details this task reads the MLX90640 camera over I2C and
- * saves the most recent frame. This task operates at
- * a frequency of 8 hz. This task also checks the frame for a hotspot
- * and sends the index of the hottest pixel to a share if it is above
- * 50 degrees C. This also indicates that a fire is detected by setting
- * the fire share to true. 
- */
-/** Find the centroid and max temp of a connected blob of hot pixels
- *  Uses flood fill to find all pixels >= tempThreshold connected to seed
- *  Returns weighted average index (useful for positioning)
+ * @details this functions performs a breadth-first search (BFS) starting from a seed pixel
+ * to find all connected pixels above a temperature threshold, effectively identifying a 
+ * "blob" of hot pixels. It computes the weighted centroid of the blob based on pixel temperatures,
+ * as well as the maximum temperature, average temperature, and size of the blob.
+ * 
+ * @param frame pointer to the thermal frame array (size 768)
+ * @param seedIdx index of the seed pixel to start the search from
+ * @param tempThreshold temperature threshold for including pixels in the blob
+ * @param outCentroidIdx reference to store the index of the computed centroid pixel
+ * @param outMaxTemp reference to store the maximum temperature found in the blob
+ * @param outAvgTemp reference to store the average temperature of the blob
+ * @param outSize reference to store the size (number of pixels) of the blob
+ * @param outCentroidX reference to store the X coordinate of the centroid
+ * @param outCentroidY reference to store the Y coordinate of the centroid
  */
 void findHotBlob(const float* frame, uint16_t seedIdx, float tempThreshold, 
                  uint16_t& outCentroidIdx, float& outMaxTemp, float& outAvgTemp,
@@ -144,6 +148,19 @@ void findHotBlob(const float* frame, uint16_t seedIdx, float tempThreshold,
     }
 }
 
+
+/** @brief task which reads the MLX90640 thermal camera and detects hotspots
+ * 
+ * @details This task continuously reads frames from the MLX90640 thermal camera at a 
+ * set refresh rate. It processes each frame to find the hottest pixel and then identifies 
+ * a connected "hot blob" of pixels around it that exceed a defined temperature threshold.
+ * The task computes the centroid of the hot blob and applies temporal smoothing to reduce 
+ * jitter in the detected position. If the maximum temperature of the blob exceeds a fire 
+ * alert threshold, it sets a shared boolean "fire" to true. The task runs indefinitely with 
+ * no delay, relying on the camera's refresh rate for timing.  
+ * 
+ * @param p_params not used and should be set to void in the xTaskCreate call     
+ */
 void task_read_camera(void* p_params) {
     long n = 0;
     fire.put(false);

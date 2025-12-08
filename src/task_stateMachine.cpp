@@ -1,7 +1,7 @@
 /** @file task_read_camera.h
  * task for controlling system states
  * 
- * @author Jackson Cordova
+ * @author Jackson Cordova, GPT5-mini
  * @date December 2025
  */
 
@@ -9,8 +9,8 @@
 #include "shares.h"
 
 #define CPP 17.5 // counts per pixel
-#define WIDTH 32
-#define HEIGHT 24
+#define WIDTH 32 // number of pixels in width
+#define HEIGHT 24 // number of pixels in height
 
 
 /** @brief State machine task
@@ -18,7 +18,8 @@
   * State 0 is an initialization state which sets all shares to default. 
   * State 1 is a scanning state where the system looks back and forth for hot spots.
   * State 2 is a tracking state where the system points the thermal camera and hose
-  * towards the detected hot spot and activates the spray.
+  * towards the detected hot spot and activates the spray mechanism. The task
+  * period is set to 100 ms.
   * 
   * @param p_params not used and should be set to void in the xTaskCreate call
   */
@@ -105,18 +106,11 @@ void task_stateMachine(void* p_params) {
                     tiltRefCount.put(0);
                     state = 1;
                 }
-                
-                
-
-                break;
-            case 3:
-                // stuff
                 break;
             default:
                 // more stuff
                 break;
         }
-
         vTaskDelay(100);
     }
 

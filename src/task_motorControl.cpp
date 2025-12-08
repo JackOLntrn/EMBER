@@ -1,7 +1,7 @@
 /** @file task_motorControl.cpp
  * Task for controlling the pan and tilt motors
  * 
- * @author Jackson Cordova
+ * @author Jackson Cordova, GPT5-mini
  * @date November 2025
  */
 
@@ -23,10 +23,15 @@
 
  
  /** @brief task which controls the pan and tilt motors
-  * @details when a fire is not present, this task will drive 
-  * the motors in a sinusoidal pattern. When a fire is present,
-  * this task will drive the motors to a reference position
-  * specified by the panRefCount and tiltRefCount shares.
+  * @details This task reads the reference counts for pan and tilt from shares
+  * as well as checks if a fire is present. When no fire is present, the task
+  * uses a velocity control loop to sweep the pan motor back and forth between
+  * its limits (180 degrees left and right). When a fire is detected, the task
+  * switches to position control mode to move the pan and tilt motors to the
+  * desired reference positions denoted by the reference counts from the shares.
+  * The task uses proportional-derivative (PD) control for position control, and
+  * proportional-integral-derivative (PID) control for velocity control during scanning.
+  * The task has a period of 10 ms.
   * 
   * @param p_params not used and should be set to void in the xTaskCreate call
   */
@@ -59,6 +64,8 @@
     const int16_t EDGE_THRESHOLD = 200;  // counts from edge to trigger direction flip
 
     while(true){
+
+        // Read reference counts and clamp to encoder counts for 180 degree pan and 45 degree tilt
         rawPRC = panRefCount.get();
         rawTRC = tiltRefCount.get();
         if (rawPRC < -4764) {
@@ -74,9 +81,9 @@
             rawPRC = 4764;
         }
 
-        Serial << "Raw PRC: " << rawPRC;
+        // Serial << "Raw PRC: " << rawPRC; // output for debugging
 
-            
+        // calculate position errors
         panErr = rawPRC - enc1.getCount();
         tiltErr = rawTRC - enc2.getCount();
 
@@ -149,12 +156,13 @@
         //Serial << "Spraying " << endl;
 
         
-        int32_t tiltRef = tiltRefCount.get();
-        long tiltCount = enc2.getCount();
-        int32_t panRef = panRefCount.get();
-        long panCount = enc1.getCount();
+        // output for debugging
+        // int32_t tiltRef = tiltRefCount.get();
+        // long tiltCount = enc2.getCount();
+        // int32_t panRef = panRefCount.get();
+        // long panCount = enc1.getCount();
         // Serial << "tilt ref: " << tiltRef << " | " << tiltCount << endl;
-        Serial << "TR: " << tiltRef << " | TC: " << tiltCount << " || PR: " << panRef << " | PC: " << panCount << endl;
+        // Serial << "TR: " << tiltRef << " | TC: " << tiltCount << " || PR: " << panRef << " | PC: " << panCount << endl;
             
 
         vTaskDelay(10); // Task Period of 10 ms

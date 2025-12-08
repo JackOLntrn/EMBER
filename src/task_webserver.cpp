@@ -1,5 +1,5 @@
 /** @file task_webserver.h
- * task for running a simple web server to demonstrate IoT functionality
+ * task for running a web server to demonstrate IoT functionality
  * 
  * @author Jackson Cordova
  * @date December 2025
@@ -31,7 +31,9 @@ IPAddress subnet (255, 255, 255, 0); // Network mask; just leave this as is
 */
 WebServer server(80);
 
-/** @brief */
+/** @brief Function which sets up the WiFi access point
+ * 
+*/
 void setup_wifi(void) {
     Serial << "Setting up WiFi access point...";
     WiFi.mode (WIFI_AP);
@@ -72,22 +74,9 @@ void HTML_header (String& a_string, const char* page_title)
  *           callback function is run. It sends the main web page's text to the
  *           requesting machine.
  */
-void handle_DocumentRoot ()
+void handle_DocumentRoot (void)
 {
     Serial << "HTTP request from client #" << server.client () << endl;
-    bool refreshYN = false;
-    // String a_str;
-    // HTML_header (a_str, "ESP32 Web Server Test");
-    // a_str += "<body>\n<div id=\"webpage\">\n";
-    // a_str += "<h1>EMBER</h1>\n";
-    // a_str += "Some subtitle\n";
-    // a_str += "<p><p> <a href=\"/toggle\">Toggle LED</a>\n";
-    // a_str += "<p><p> <a href=\"/csv\">Show some data in CSV format</a>\n";
-    // a_str += "</div>\n</body>\n</html>\n";
-
-    //server.send (200, "text/html", a_str); 
-    // if (fire.get() == false) {
-        refreshYN = false;
         server.send(200, "text/html", R"rawliteral(
             <!DOCTYPE html>
             <html>
@@ -271,26 +260,6 @@ void handle_DocumentRoot ()
             </body>
             </html>
             )rawliteral");
-        // }
-        // else {
-        //     server.send(200, "text/html", R"rawliteral(
-        //     <!DOCTYPE html>
-        //     <html>
-        //     <head>
-        //     <meta charset="utf-8">
-        //     <title>EMBER Thermal Viewer - FIRE DETECTED</title>
-        //     <style>
-        //         body { font-family: sans-serif; background: #ff9d00ff; color: #1f0000ff; text-align:center; padding: 20px; }
-        //         h1 { color: red; }
-        //     </style>
-        //     </head>
-        //     <body>
-        //     <h1>FIRE DETECTED!</h1>
-        //     <p>The thermal camera has detected a fire.</p>
-        //     </body>
-        //     </html>
-        //     )rawliteral");
-        // }
         
 }
 
@@ -303,8 +272,9 @@ void handle_NotFound (void)
     server.send (404, "text/plain", "Not found");
 }
 
-// Serve thermal data as JSON
-void handle_Thermal() {
+/** @brief Function to serve thermal frame as JSON for web UI
+ */
+void handle_Thermal(void) {
   // Build JSON
   DynamicJsonDocument doc(16384); // size depends on resolution; adjust as needed
   doc["w"] = THERM_W;
@@ -325,6 +295,9 @@ void handle_Thermal() {
 }
 
 // Serve fire state as JSON
+/** @brief Function to serve fire state as JSON for web UI
+ * 
+ */
 void handle_Fire() {
   DynamicJsonDocument doc(128);
   doc["fire"] = fire.get();

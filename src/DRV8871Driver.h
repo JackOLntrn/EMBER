@@ -22,7 +22,10 @@
  * @details This class enables drive, coast, and brake functions 
  * for a DRV8871 motor driver. It uses PWM for speed control and 
  * a digital pin for direction control. This class uses 8 bit
- * PWM resolution, so speed values should be between 0 and 255.
+ * PWM resolution, so speed values should be integers from 0 to 255.
+ * 
+ * @tparam in1: PWM output pin (uses analogWrite)
+ * @tparam in2: Direction pin (uses digitalWrite)
  */
 class DRV8871Driver {
     protected:
@@ -30,27 +33,25 @@ class DRV8871Driver {
         uint8_t in2Pin;      // Direction pin (digital)
         
     public:
-        /**
-         * Constructor
+        /** @brief Constructor function which initializes the motor driver
+         * 
          * @param in1 PWM output pin
          * @param in2 Direction pin
          */
         DRV8871Driver(uint8_t in1, uint8_t in2);
 
-        /**
-         * Drive the motor
+        /** @brief Function which drives the motor at a specified speed and direction
+         * 
          * @param speed unsigned speed value. Range: 0 to max based on resolution
          * @param dir   Direction (true/false) written to the direction pin
          */
         void driveMotor(uint8_t speed, bool dir);
 
-        /**
-         * Coast the Motor (disable PWM) - slowly come to a stop from friction
+        /** @brief Coast motor to stop - lets the motor spin down by itself
          */
         void coastMotor(void);
 
-        /**
-         * Brake the motor quickly - quickly stop the motor using active braking
+        /** @brief Brake the motor Quickly - uses active braking to stop the motor
          */
         void brakeMotor(void);
 };

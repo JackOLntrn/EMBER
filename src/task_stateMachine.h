@@ -1,7 +1,7 @@
 /** @file task_read_camera.h
  * task for controlling system states
  * 
- * @author Jackson Cordova
+ * @author Jackson Cordova, GPT5-mini
  * @date December 2025
  */
 

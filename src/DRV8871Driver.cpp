@@ -22,10 +22,11 @@ DRV8871Driver::DRV8871Driver(uint8_t in1, uint8_t in2)
 
 void DRV8871Driver::driveMotor(uint8_t speed, bool dir)
 {
+    // Since one pin is used for direction, invert speed based on direction
     if (dir) {
         speed = 255 - speed;
     }
-
+    // Set PWM speed and direction
     analogWrite(in1Pin, speed);
     digitalWrite(in2Pin, dir ? HIGH : LOW);
 }
