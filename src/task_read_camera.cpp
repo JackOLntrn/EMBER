@@ -1,4 +1,4 @@
-/** @file task_read_camera.h
+/** @file task_read_camera.cpp
  * 
  * @brief Thermal camera reading and hot blob detection task
  * @author Jackson Cordova, GPT5-mini

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['setup_5fwifi_0',['setup_wifi',['../task__webserver_8h.html#a2db7e734a3678bd61b7b9556caf2d933',1,'task_webserver.cpp']]]
+  ['findhotblob_0',['findHotBlob',['../task__read__camera_8cpp.html#a507280b05384264d1d72fa2b342ad29b',1,'task_read_camera.cpp']]]
 ];
