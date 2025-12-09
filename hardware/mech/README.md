@@ -11,7 +11,7 @@ Custom Solidworks Files
 The main assembly file, contains all the relevant piece parts mated to visualize real world model.
 
 ### 2. EMBER Board
-Model of our custom PCB exported from KiCAD for fitting.
+Model of the custom PCB exported from KiCAD for fitting.
 
 QTY: 1
 
@@ -51,7 +51,7 @@ Mechanical arm that mounts to tilt motor D shaft coupling and mounts IR camera a
 QTY: 1
 
 ### 8. EMBER Hose Nozzle
-Test file to ensure threads fit our purchased mechanical parts. Not in final assembly.
+Test file to ensure threads fit the purchased mechanical parts. Not in final assembly.
 
 QTY: 1
 
