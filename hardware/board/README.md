@@ -1,5 +1,6 @@
 # EMBER Board Design
 
+![here](Board_3D.png)
 
 This folder contains the schematic and pcb files for EMBER.
 
