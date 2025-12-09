@@ -36,19 +36,19 @@ Flyback Diode for Solenoid/MOSFET circuit : [1N4004-E3/54](https://www.digikey.c
 ### 4. MOSFET N-CH x1
 MOSFET to turn solenoid on/off from motorcontroller N-Channel 60 V 22A (Tc) 3.3W (Ta), 43W (Tc) - Onsemi: [SVD5867NLT4G](https://www.digikey.com/en/products/detail/onsemi/SVD5867NLT4G/3062534)
 
-### 5. 100k$\Omega$ Resistor x1
+### 5. 100kΩ Resistor x1
 Resistor between microcontroller and MOSFET gate - Vishay Dale: [TNPW1206100RBEEA](https://www.digikey.com/en/products/detail/vishay-dale/TNPW1206100RBEEA/1607739?s=N4IgTCBcDaICoDkAKBGADGgggYW3AtAgCIgC6AvkA)
 
-### 6. 4.7k$\Omega$ Resistor x6
+### 6. 4.7kΩ Resistor x6
 Pullup Resistors for I2C circuit and Encoder Channels - YAGEO: [RC1206FR-074K7L](https://www.digikey.com/en/products/detail/yageo/RC1206FR-074K7L/728887?s=N4IgTCBcDaIMwEYEFoAsA6A7ABgNIDEAlAYQBVkA5AERAF0BfIA)
 
-### 7. 32k$\Omega$ Resistor x2
+### 7. 32kΩ Resistor x2
 Current limit resistor for motor drivers (limitting to 2A, under the motor stall current to protect motors) - KOA Speer Electronics, Inc: [RN73H2BTTD3202F100](https://www.digikey.com/en/products/detail/koa-speer-electronics-inc/RN73H2BTTD3202F100/10098378?s=N4IgTCBcDa4AwEYCcBaASgOQOwGYASYAQgCrEAiOYcYAYgnHAMLEoZkgC6AvkA)
 
-### 8. 47$\mu F$ Capacitor x1
+### 8. 47μF Capacitor x1
 Filter capacitor for motor drivers - TDK Corporation: [C3216X5R1E476M160DC](https://www.digikey.com/en/products/detail/tdk-corporation/C3216X5R1E476M160DC/22106052?s=N4IgTCBcDaICxwKwFoDCBmMBGAbADUQCUsBROAdhwFlcAGAEVVQBVkA5ekAXQF8g)
 
-### 9. 0.1$\mu F$ Capacitor x2
+### 9. 0.1μF Capacitor x2
 Filter capacitor for motor drivers - KEMET: [C1206C104K5RACTU](https://www.digikey.com/en/products/detail/kemet/C1206C104K5RACTU/411248?s=N4IgTCBcDaIMwE4EFoDCBGMAGAbBrALANICsASgIKoAqAqjcgHIAiIAugL5A)
 
 ### 10. 2 Position Screw Terminal x2
