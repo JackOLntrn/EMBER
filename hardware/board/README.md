@@ -23,6 +23,8 @@ Flyback Diode for Solenoid/MOSFET circuit : [1N4004-E3/54](https://www.digikey.c
 ### x. MOSFET N-CH x1
 MOSFET to turn solenoid on/off from motorcontroller N-Channel 60 V 22A (Tc) 3.3W (Ta), 43W (Tc) - Onsemi: [SVD5867NLT4G](https://www.digikey.com/en/products/detail/onsemi/SVD5867NLT4G/3062534)
 
+### x. 4.7k\Omega
+
 ### x. 2 Position Screw Terminal x2
 12V power in and Solenoid power out terminals - Phoenix Contact: [1725656](https://www.digikey.com/en/products/detail/phoenix-contact/1725656/267462)
 
