@@ -7,6 +7,7 @@ The board has the following terminals for connection to hardware:
 
 | Terminal | Description |
 | --- | --- |
+| ESP32 Pin Connector | 28 pin connector for connection of ESP32 to the board. |
 | Encoder Terminal | 8 position terminal for connection to the 2 motor quadrature encoders. Has 3.3V+ and gnd output for both terminals denoted by Eni+ and Eni- respectively. Has inputs for channels A and B. |
 | DC Motor Terminal | 4 position terminal to connect the 2 motors. Ensure that motor 1's encoder is connected to channels A1 and B1 on the encoder terminal, and motor 2's encoder is connected to channels A2 and B2 on the encoder terminal. |
 | IR Cam Terminal | 4 position terminal for I2C connection to the MLX90640 Thermal IR Camera. Has 3.3V+ and gnd output and SDA/SCL input. |
