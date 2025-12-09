@@ -10,54 +10,67 @@ The main assembly file, contains all the relevant piece parts mated to visualize
 
 ### 2. EMBER Board
 Model of our custom PCB exported from KiCAD for fitting.
+
 QTY: 1
 
 ### 3. EMBER Base Enclosure
 Main part that seats all parts and holds the solenoid valve.
+
 QTY: 1
 
 ### 4. EMBER Base Lid 1
 Large circular plate that mounts the pan motor and connects enclosure supports to the turntable.
+
 QTY: 1
 
 ### 5. EMBER Board Mount
 Piece that has standoffs for the PCB and holds in place using dovetail slot on base enclosure.
+
 QTY: 1
 
 ### 6. EMBER Enclosure Supports
 Supports all components connected to the upper base lid and above.
+
 QTY: 6
 
 ### 7. EMBER Hose Boom Arm
 Mechanical arm that mounts to tilt motor D shaft coupling and mounts IR camera and flexible hose end.
+
 QTY: 1
 
 ### 8. EMBER Hose Nozzle
 Test file to ensure threads fit our purchased mechanical parts.
+
 QTY: 1
 
 ### 9. EMBER IR Camera Cover
 Snap fit cover for the IR camera when seated into the hose boom arm.
+
 QTY: 1
 
 ### 10. EMBER Pan Motor Gear
 22-tooth external gear mounted to pan motor D shaft coupling and rotates with the internal teeth on top platform.
+
 QTY: 1
 
 ### 11. EMBER Tilt Motor Mount
 Tilt motor mounting that has slots and fastened onto top platform with motor mount. 
+
 QTY: 1
 
 ### 12. EMBER Top Platform with Motor Mount
 Cover that seats above top platform and has features to connect tilt motor mount onto it.
+
 QTY: 1
 
 ### 13. EMBER Top Platform
 Internal teeth gear that mounts onto top of lubricated turntable. 
+
 QTY: 1
 
 ### 14. 1544T1 Lubricated Turntable
 Turntable from McMaster Carr used to minimize friction on pan mechanism. 
+
 QTY: 1
 
 Electrical Hardware
@@ -83,14 +96,17 @@ Mechanical Hardware
 
 ### [1. 3/4 in. MNPT x FHT PVC Swivel](https://www.homedepot.com/p/Orbit-3-4-in-MNPT-x-FHT-PVC-Swivel-53364/100197786?MERCH=REC-_-pip_alternatives-_-100373234-_-3-_-n/a-_-n/a-_-n/a-_-n/a-_-n/a)
 Connects common household hose to solenoid valve and the solenoid valve to the internal hose.
+
 QTY: 2
 
 ### [2. 1/2 in. Barb x 3/4 in. MIP Nylon Adapter Fitting](https://www.homedepot.com/p/Everbilt-1-2-in-Barb-x-3-4-in-MIP-Nylon-Adapter-Fitting-800229/300862694)
 Connects solenoid valve to flexible hose and flexible hose to mechanical arm.
+
 QTY: 2
 
 ### [3. 1/2 in. I.D. x 5/8 in. O.D. x 10 ft. Clear Vinyl Tubing](https://www.homedepot.com/p/Everbilt-1-2-in-I-D-x-5-8-in-O-D-x-10-ft-Clear-Vinyl-Tubing-T10006010/304185142)
 Flexible hose that fits into the nylon barb adapter and supplies water from the hosehold hose to our target.
+
 QTY: 1
 
 
