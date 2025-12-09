@@ -2,6 +2,7 @@
  * This file contains extern declarations of shares and queues 
  * which are used in multiple files of the EMBER project.
  * 
+ * @brief Shared resources for EMBER project
  * @author Jackson Cordova
  * @date November 2025
  */

@@ -1,6 +1,6 @@
 /** @file task_webserver.h
- * task for running a web server to demonstrate IoT functionality
  * 
+ * @brief Web server task for EMBER project
  * @author Jackson Cordova
  * @date December 2025
  */

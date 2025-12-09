@@ -1,6 +1,7 @@
 /** @file task_motorControl.cpp
  * Task for controlling the pan and tilt motors
  * 
+ * @brief Motor control task for pan and tilt
  * @author Jackson Cordova, GPT5-mini
  * @date November 2025
  */

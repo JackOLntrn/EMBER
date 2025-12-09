@@ -1,6 +1,6 @@
 /** @file task_read_camera.h
- * task for reading the MLX90640 thermal camera
  * 
+ * @brief Thermal camera task header
  * @author Jackson Cordova, GPT5-mini
  * @date November 2025
  */

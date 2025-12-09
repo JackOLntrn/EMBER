@@ -1,6 +1,7 @@
-/** @file task_read_camera.h
+/** @file task_stateMachine.h
  * task for controlling system states
  * 
+ * @brief State machine task header
  * @author Jackson Cordova, GPT5-mini
  * @date December 2025
  */
