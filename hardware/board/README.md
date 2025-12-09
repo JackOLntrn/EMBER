@@ -3,6 +3,17 @@
 
 This folder contains the schematic and pcb files for EMBER.
 
+The board has the following terminals for connection to hardware:
+
+| --- | --- |
+| Encoder Terminal | 8 position terminal for connection to the 2 motor quadrature encoders. Has 3.3V+ and gnd output for both terminals denoted by Eni+ and Eni- respectively. Has inputs for channels A and B. |
+| Motor Terminal | 4 position terminal to connect the 2 motors. Ensure that motor 1's encoder is connected to channels A1 and B1 on the encoder terminal, and motor 2's encoder is connected to channels A2 and B2 on the encoder terminal. |
+| IR Cam Terminal | 4 position terminal for I2C connection to the MLX90640 Thermal IR Camera. Has 3.3V+ and gnd output and SDA/SCL input. |
+| IMU Terminal | 4 position terminal to support an additional I2C peripheral, for instance an IMU. Has 3.3V+ and gnd output and SDA/SCL input. |
+|Solenoid | 2 position terminal for connection to the Solenoid. Outputs Vm+ and Vm- using a MOSFET controlled by the microcontroller with a flyback diode circuit. |
+| External Power (12V) | 2 position terminal for connection to battery. Vm+ should be ~12V+ and Vm- should be gnd. |
+
+
 ### Board
 ![here](Board.png)
 
