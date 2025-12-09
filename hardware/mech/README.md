@@ -57,6 +57,8 @@ Solenoid valve that connects household hose to internal pipe fittings.
 Specification sheet for our selected 12V motor.
 QTY: 2
 
+### [3. MLX90640 IR Camera](https://www.adafruit.com/product/4407#technical-details)
+
 Mechanical Hardware
 ------
 
