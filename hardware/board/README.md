@@ -11,10 +11,11 @@ This folder contains the schematic and pcb files for EMBER.
 
 ## Board Componenets
 
-### x. 
+### x. ESP32 NODEMCU-32S ESP-32S Kit x1
+ESP32 NodeMCU ESP-32S For ESP-WROOM-32E WiFi Development Board Serial WiFi Bluetooth-compatible Module - AliExpress: [NodeMCU ESP-32S](https://www.aliexpress.us/item/3256803993966716.html?aff_fcid=af0d56b72584400e939c5846a142b640-1765257992709-07791-_DekJaq1&tt=CPS_NORMAL&aff_fsk=_DekJaq1&aff_platform=shareComponent-detail&sk=_DekJaq1&aff_trace_key=af0d56b72584400e939c5846a142b640-1765257992709-07791-_DekJaq1&terminal_id=c19409dd1363429c8f1fb5e260b0cc2d&afSmartRedirect=y&gatewayAdapt=glo2usa4itemAdapt)
 
 ### x. DRV8871DDAR - Motor Driver x2
-Unipolar Motor Driver NMOS PWM 8-SO PowerPad - Texas Instruments: [DRV8871DDAR](https://www.digikey.com/en/products/detail/texas-instruments/DRV8871DDAR/5639726)\
+Unipolar Motor Driver NMOS PWM 8-SO PowerPad - Texas Instruments: [DRV8871DDAR](https://www.digikey.com/en/products/detail/texas-instruments/DRV8871DDAR/5639726)
 
 ### x. 1N4004 - Flyback Diode x1
 Diode 400 V 1A Through Hole DO-204AC (DO-41) - 	
