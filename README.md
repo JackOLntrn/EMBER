@@ -4,7 +4,7 @@ The EMBER project makes use of the a thermal IR camera to detect fires on a pan/
 | Directory | Contents|
 | --- | --- |
 | [EMBER/src](src/) | Contains the header and cpp files developed for the project |
-| [EMBER/hardware/board](hardware/board) | Contains the schematic and board files used to develop a custom PCB used for the project. Additionally, gerber files are included which were used during ordering the board |
+| [EMBER/hardware/board](hardware/board) | Contains the schematic board and gerber files used to develop a custom PCB used for the project|
 | [EMBER/hardware/mech](hardware/mech) | Contains the 3D model files of parts developed for the project |
 | [EMBER/docs](docs/) | Contains doxygen generated documents for code documentation |
 
