@@ -1,5 +1,4 @@
 /** @file task_stateMachine.h
- * task for controlling system states
  * 
  * @brief State machine task header
  * @author Jackson Cordova, GPT5-mini
