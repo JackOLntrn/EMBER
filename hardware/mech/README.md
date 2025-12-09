@@ -9,6 +9,7 @@ Custom Solidworks Files
 The main assembly file, contains all the relevant piece parts mated to visualize real world model.
 
 ### 2. EMBER Board
+![alt text](https://github.com/JackOLntrn/EMBER/hardware/mech/photos/EMBER_base_enclosure.png "Base Enclosure")
 Model of our custom PCB exported from KiCAD for fitting.
 
 QTY: 1
