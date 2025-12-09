@@ -65,14 +65,17 @@ Electrical Hardware
 
 ### [1. 3/4" 12V DC Solenoid Valve - Brass Body Normally Closed, VITON SEAL](https://ussolid.com/products/u-s-solid-electric-solenoid-valve-3-4-12v-dc-solenoid-valve-brass-body-normally-closed-viton-seal-html)
 Solenoid valve that connects household hose to internal pipe fittings.
+
 QTY: 1
 
 ### [2. 37GB-3530-EN Motor](../mech/37GB-3530-EN_Motor_Spec_Sheet.pdf)
 Specification sheet for our selected 12V motor.
+
 QTY: 2
 
-### [2. Adafruit MLX90640 IR Thermal Camera Breakout - 55 Degree](https://www.adafruit.com/product/4407#description)
+### [3. Adafruit MLX90640 IR Thermal Camera Breakout - 55 Degree](https://www.adafruit.com/product/4407#description)
 IR Thermal Camera product page and description.
+
 QTY: 1
 
 Mechanical Hardware
