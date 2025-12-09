@@ -9,5 +9,10 @@ The EMBER project makes use of the **MLX90640** thermal camera to detect fires o
 | EMBER/docs | Contains doxygen generated documents for code documentation |
 | EMBER/platformio files | Contains useful platformio files including platformio.ini which includes libraries used for project |
 
+# Hardware
+See board documentation [here](EMBER/hardware/board/README.md)
+See mechanical component documentation [here](EMBER/hardware/mech/README.md)
+
+
 
 
