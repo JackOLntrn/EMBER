@@ -7,7 +7,6 @@ The EMBER project makes use of the a thermal IR camera to detect fires on a pan/
 | [EMBER/hardware/board](hardware/board) | Contains the schematic and board files used to develop a custom PCB used for the project. Additionally, gerber files are included which were used during ordering the board |
 | [EMBER/hardware/mech](hardware/mech) | Contains the 3D model files of parts developed for the project |
 | [EMBER/docs](docs/) | Contains doxygen generated documents for code documentation |
-| [EMBER/platformio files](platformio%20files/) | Contains useful platformio files including platformio.ini which includes libraries used for project |
 
 # Hardware
 See board documentation [here](hardware/board/README.md)
