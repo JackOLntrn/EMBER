@@ -1,6 +1,6 @@
 # EMBER
 ## Overview
-The EMBER project makes use of the **MLX90640** thermal camera to detect fires on a pan/tilt motor mechanism. Once a fire is detected, the system points the thermal camera/hose nozzle at the detected fire and activates a solenoid to spray water at the detected fire. The system is supplied with water from a garden hose. This repository includes all of the relavant files for the project. 
+The EMBER project makes use of the a thermal IR camera to detect fires on a pan/tilt motor mechanism. Once a fire is detected, the system points the thermal camera/hose nozzle at the detected fire and activates a solenoid to spray water at the detected fire. The system is supplied with water from a garden hose. This repository includes all of the relavant files for the project. 
 | Directory | Contents|
 | --- | --- |
 | [EMBER/src](src/) | Contains the header and cpp files developed for the project |
