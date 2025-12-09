@@ -5,7 +5,7 @@ This folder contains the mechanical assembly for EMBER and its associated compon
 Custom Solidworks Files
 ------
 
-### [1. EMBER Assembly](EMBER/hardware/mech/EMBER.SLDASM)
+### [1. EMBER Assembly](../mech/EMBER.SLDASM)
 The main assembly file, contains all the relevant piece parts mated to visualize real world model.
 
 ### 2. EMBER Board
@@ -45,7 +45,7 @@ Cover that seats above top platform and has features to connect tilt motor mount
 Internal teeth gear that mounts onto top of lubricated turntable. 
 
 ### 14. 1544T1 Lubricated Turntable
-Turntable used to minimize friction on pan mechanism. 
+Turntable from McMaster Carr used to minimize friction on pan mechanism. 
 
 Electrical Hardware
 ------
@@ -53,9 +53,23 @@ Electrical Hardware
 ### [1. 3/4" 12V DC Solenoid Valve - Brass Body Normally Closed, VITON SEAL](https://ussolid.com/products/u-s-solid-electric-solenoid-valve-3-4-12v-dc-solenoid-valve-brass-body-normally-closed-viton-seal-html)
 Solenoid valve that connects household hose to internal pipe fittings.
 
-### [2. 37GB-3530-EN Motor](EMBER/hardware/mech/37GB-3530-EN_Motor_Spec_Sheet.pdf)
+### [2. 37GB-3530-EN Motor](../mech/37GB-3530-EN_Motor_Spec_Sheet.pdf)
 Specification sheet for our selected 12V motor.
+QTY: 2
 
+Mechanical Hardware
+------
+
+### [1. 3/4 in. MNPT x FHT PVC Swivel](https://www.homedepot.com/p/Orbit-3-4-in-MNPT-x-FHT-PVC-Swivel-53364/100197786?MERCH=REC-_-pip_alternatives-_-100373234-_-3-_-n/a-_-n/a-_-n/a-_-n/a-_-n/a)
+Connects common household hose to solenoid valve and the solenoid valve to the internal hose.
+QTY: 2
+
+### [2. 1/2 in. Barb x 3/4 in. MIP Nylon Adapter Fitting](https://www.homedepot.com/p/Everbilt-1-2-in-Barb-x-3-4-in-MIP-Nylon-Adapter-Fitting-800229/300862694)
+Connects solenoid valve to flexible hose and flexible hose to mechanical arm.
+QTY: 2
+
+### [3. 1/2 in. I.D. x 5/8 in. O.D. x 10 ft. Clear Vinyl Tubing](https://www.homedepot.com/p/Everbilt-1-2-in-I-D-x-5-8-in-O-D-x-10-ft-Clear-Vinyl-Tubing-T10006010/304185142)
+Flexible hose that fits into the nylon barb adapter and supplies water from the hosehold hose to our target.
 
 
 
