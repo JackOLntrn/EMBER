@@ -37,7 +37,7 @@ Flyback Diode for Solenoid/MOSFET circuit : [1N4004-E3/54](https://www.digikey.c
 ### 4. MOSFET N-CH x1
 MOSFET to turn solenoid on/off from microcontroller N-Channel 60 V 22A (Tc) 3.3W (Ta), 43W (Tc) - Onsemi: [SVD5867NLT4G](https://www.digikey.com/en/products/detail/onsemi/SVD5867NLT4G/3062534)
 
-### 5. 100kΩ Resistor x1
+### 5. 100Ω Resistor x1
 Resistor between microcontroller and MOSFET gate - Vishay Dale: [TNPW1206100RBEEA](https://www.digikey.com/en/products/detail/vishay-dale/TNPW1206100RBEEA/1607739?s=N4IgTCBcDaICoDkAKBGADGgggYW3AtAgCIgC6AvkA)
 
 ### 6. 4.7kΩ Resistor x6
