@@ -8,7 +8,6 @@ The EMBER project makes use of the a thermal IR camera to detect fires on a pan/
 | [EMBER/hardware/mech](hardware/mech) | Contains the 3D model files of parts developed for the project |
 | [EMBER/docs](docs/) | Contains doxygen generated documents for code documentation |
 
-# Hardware
 See board documentation [here](hardware/board/README.md)
 
 See mechanical component documentation [here](hardware/mech/README.md)
