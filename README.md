@@ -13,6 +13,5 @@ See board documentation [here](hardware/board/README.md)
 
 See mechanical component documentation [here](hardware/mech/README.md)
 
-
-
+See code documentation [here](jackolntrn.github.io/EMBER/)
 
